@@ -4,4 +4,20 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\CreateManager.sql" />
+    <None Remove="Resources\DeleteManager.sql" />
+    <None Remove="Resources\GetAllManagers.sql" />
+    <None Remove="Resources\GetManagerById.sql" />
+    <None Remove="Resources\UpdateManager.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CreateManager.sql" />
+    <EmbeddedResource Include="Resources\DeleteManager.sql" />
+    <EmbeddedResource Include="Resources\GetAllManagers.sql" />
+    <EmbeddedResource Include="Resources\GetManagerById.sql" />
+    <EmbeddedResource Include="Resources\UpdateManager.sql" />
+  </ItemGroup>
+
 </Project>
