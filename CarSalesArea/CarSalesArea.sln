@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSalesArea.Api", "CarSalesArea.Api\CarSalesArea.Api.csproj", "{6A0821FA-10AB-4269-A20E-67BF97325E17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarSalesArea.Api", "CarSalesArea.Api\CarSalesArea.Api.csproj", "{6A0821FA-10AB-4269-A20E-67BF97325E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSalesArea.Core", "CarSalesArea.Core\CarSalesArea.Core.csproj", "{65D90D08-C033-4958-A8D4-A09D4180C58A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarSalesArea.Data", "CarSalesArea.Data\CarSalesArea.Data.csproj", "{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSalesArea.Data", "CarSalesArea.Data\CarSalesArea.Data.csproj", "{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarSalesArea.Core", "CarSalesArea.Core\CarSalesArea.Core.csproj", "{A2DB9A07-D5DF-443A-B54C-495195468ED3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{6A0821FA-10AB-4269-A20E-67BF97325E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A0821FA-10AB-4269-A20E-67BF97325E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0821FA-10AB-4269-A20E-67BF97325E17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65D90D08-C033-4958-A8D4-A09D4180C58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65D90D08-C033-4958-A8D4-A09D4180C58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65D90D08-C033-4958-A8D4-A09D4180C58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65D90D08-C033-4958-A8D4-A09D4180C58A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BF0A5F6-2433-49F3-8B08-98F4FA3792F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2DB9A07-D5DF-443A-B54C-495195468ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2DB9A07-D5DF-443A-B54C-495195468ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2DB9A07-D5DF-443A-B54C-495195468ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2DB9A07-D5DF-443A-B54C-495195468ED3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

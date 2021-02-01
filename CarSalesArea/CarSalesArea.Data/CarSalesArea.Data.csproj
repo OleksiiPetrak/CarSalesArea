@@ -1,7 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <UserSecretsId>27c9bbc6-de0d-439c-b227-5666ff028335</UserSecretsId>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\CreateManager.sql" />
+    <None Remove="Resources\DeleteManager.sql" />
+    <None Remove="Resources\GetAllManagers.sql" />
+    <None Remove="Resources\GetManagerById.sql" />
+    <None Remove="Resources\UpdateManager.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CreateManager.sql" />
+    <EmbeddedResource Include="Resources\DeleteManager.sql" />
+    <EmbeddedResource Include="Resources\GetAllManagers.sql" />
+    <EmbeddedResource Include="Resources\GetManagerById.sql" />
+    <EmbeddedResource Include="Resources\UpdateManager.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.78" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
 
 </Project>

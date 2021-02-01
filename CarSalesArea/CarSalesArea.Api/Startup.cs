@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CarSalesArea.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using CarSalesArea.Data.Extensions;
 
 namespace CarSalesArea.Api
 {
@@ -26,6 +21,8 @@ namespace CarSalesArea.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCore(Configuration);
+            services.AddData(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
