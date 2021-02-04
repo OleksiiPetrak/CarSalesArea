@@ -1,10 +1,9 @@
-DECLARE @Id NUMERIC;
-
 SELECT 
 	m.Id,
 	m.ManagerName,
 	m.Surname,
 	m.AreaId,
+	sa.Id,
 	sa.AreaLocation,
 	sa.Capacity
 FROM Manager m

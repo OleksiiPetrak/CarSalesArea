@@ -1,8 +1,3 @@
-DECLARE @Id INT,
-	@ManagerName NVARCHAR(100),
-	@Surname NVARCHAR(100),
-	@AreaId INT;
-
 BEGIN TRAN
 
 	UPDATE Manager

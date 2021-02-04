@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarSalesArea.Data.Helpers;
+﻿using CarSalesArea.Data.Helpers;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarSalesArea.Data.Repositories
 {
@@ -20,6 +18,7 @@ namespace CarSalesArea.Data.Repositories
 
         private static Lazy<string> GetAllManagers = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> GetManagerById = ScriptLoader.GetLazyEmbeddedResource<Manager>();
+        private static Lazy<string> GetLatestManagerId = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> CreateManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> UpdateManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> DeleteManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
@@ -39,9 +38,21 @@ namespace CarSalesArea.Data.Repositories
                     await connection.OpenAsync();
 
                     var command = new CommandDefinition(
-                        GetManagerById.Value);
+                        GetManagerById.Value,
+                        new{});
 
-                    return connection.QueryFirstOrDefault<Manager>(command);
+                    return (await connection.QueryAsync<Manager, SalesArea, Manager>(
+                        GetManagerById.Value,
+                        (manager, area) =>
+                        {
+                            manager.SalesArea = area;
+                            return manager;
+                        },
+                        new
+                        {
+                            Id = id
+                        },
+                        splitOn: "AreaId")).FirstOrDefault();
                 }
             }
             catch (SqlException e)
@@ -77,7 +88,7 @@ namespace CarSalesArea.Data.Repositories
             }
         }
 
-        public async Task CreateManagerAsync(Manager manager)
+        public async Task<long> CreateManagerAsync(Manager manager)
         {
             try
             {
@@ -95,6 +106,8 @@ namespace CarSalesArea.Data.Repositories
                         });
 
                     await connection.ExecuteAsync(command);
+
+                    return await GetLatestManagerIdAsync(connection);
                 }
             }
             catch (SqlException e)
@@ -152,6 +165,14 @@ namespace CarSalesArea.Data.Repositories
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        private async Task<long> GetLatestManagerIdAsync(SqlConnection connection)
+        {
+            var command = new CommandDefinition(
+                GetLatestManagerId.Value);
+
+            return await connection.QueryFirstOrDefaultAsync<long>(command);
         }
     }
 }

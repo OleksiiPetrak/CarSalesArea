@@ -1,12 +1,13 @@
-using System;
 using CarSalesArea.Core.Services;
 using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
-using NuGet.Frameworks;
+using AutoMapper;
+using CarSalesArea.Core.Models;
 
 namespace CarSalesArea.Core.UnitTests.Services
 {
@@ -15,11 +16,15 @@ namespace CarSalesArea.Core.UnitTests.Services
     {
         private readonly IManagerService _managerService;
         private readonly Mock<IManagerRepository> _managerRepositoryMock;
+        private readonly Mock<IMapper> _mapperMock;
 
         public ManagerServiceTest()
         {
             _managerRepositoryMock = new Mock<IManagerRepository>();
-            _managerService = new ManagerService(_managerRepositoryMock.Object);
+            _mapperMock = new Mock<IMapper>();
+            _managerService = new ManagerService(
+                _managerRepositoryMock.Object,
+                _mapperMock.Object);
         }
 
         [TestMethod]
@@ -68,7 +73,7 @@ namespace CarSalesArea.Core.UnitTests.Services
             var result = _managerService.GetManagerByIdAsync(1);
 
             //Assert
-            Assert.AreEqual(manager, result);
+            Assert.AreEqual(manager, result.Result);
         }
 
         [TestMethod]
@@ -84,19 +89,19 @@ namespace CarSalesArea.Core.UnitTests.Services
             //Act
 
             //Assert
-            Assert.ThrowsException<NullReferenceException>(() => _managerService.GetManagerByIdAsync(1));
+            Assert.ThrowsExceptionAsync<NullReferenceException>(() => _managerService.GetManagerByIdAsync(It.IsAny<long>()));
         }
 
         [TestMethod]
         public void CreateManagerAsync_CreatesManager_IfModelIsValid()
         {
             //Arrange
-            var manager = new Manager
+            var manager = new ManagerModel
             {
                 Id = 1,
                 ManagerName = "Name",
                 Surname = "Surname",
-                SalesArea = new SalesArea()
+                SalesArea = new SalesAreaModel()
             };
 
             _managerRepositoryMock
@@ -113,24 +118,24 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void CreateManagerAsync_ThrowsArgumentNullException_IfModelIsNull()
         {
             //Arrange
-            Manager manager = null;
+            ManagerModel manager = null;
 
             //Act
 
             //Assert
-            Assert.ThrowsException<ArgumentNullException>(() => _managerService.CreateManagerAsync(manager));
+            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _managerService.CreateManagerAsync(manager));
         }
 
         [TestMethod]
         public void UpdateManagerAsync_UpdatesManager_ItExists()
         {
             //Arrange
-            var manager = new Manager
+            var manager = new ManagerModel
             {
                 Id = 1,
                 ManagerName = "Name",
                 Surname = "Surname",
-                SalesArea = new SalesArea()
+                SalesArea = new SalesAreaModel()
             };
 
             _managerRepositoryMock
@@ -147,22 +152,22 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void UpdateManagerAsync_ThrowsArgumentNullException_IfModelIsNull()
         {
             //Arrange
-            Manager manager = null;
+            ManagerModel manager = null;
 
             //Assert
-            Assert.ThrowsException<ArgumentNullException>(() => _managerService.UpdateManagerAsync(manager));
+            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _managerService.UpdateManagerAsync(manager));
         }
         
         [TestMethod]
         public void UpdateManagerAsync_ThrowsNullReferenceException_IfNotExist()
         {
             //Arrange
-            var manager = new Manager
+            var manager = new ManagerModel
             {
                 Id = 1,
                 ManagerName = "Name",
                 Surname = "Surname",
-                SalesArea = new SalesArea()
+                SalesArea = new SalesAreaModel()
             };
 
             _managerRepositoryMock.Setup(x => x.UpdateManagerAsync(It.IsAny<Manager>()))
@@ -171,7 +176,7 @@ namespace CarSalesArea.Core.UnitTests.Services
             //Act
             
             //Assert
-            Assert.ThrowsException<NullReferenceException>(() => _managerService.CreateManagerAsync(manager));
+            Assert.ThrowsExceptionAsync<NullReferenceException>(() => _managerService.CreateManagerAsync(manager));
         }
 
         [TestMethod]
@@ -199,7 +204,7 @@ namespace CarSalesArea.Core.UnitTests.Services
             //Act
 
             //Assert
-            Assert.ThrowsException<NullReferenceException>(() => _managerService.RemoveManagerAsync(id));
+            Assert.ThrowsExceptionAsync<NullReferenceException>(() => _managerService.RemoveManagerAsync(id));
         }
     }
 }

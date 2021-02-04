@@ -1,5 +1,3 @@
-DECLARE @Id INT;
-
 BEGIN TRAN
 
 	DELETE Manager

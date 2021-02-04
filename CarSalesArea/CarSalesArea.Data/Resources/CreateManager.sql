@@ -1,7 +1,3 @@
-DECLARE @ManagerName NVARCHAR(100),
-	@Surname NVARCHAR(100),
-	@AreaId INT;
-
 BEGIN TRAN
 
 INSERT INTO Manager VALUES

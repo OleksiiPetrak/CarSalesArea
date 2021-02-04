@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0-preview.2" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CarSalesArea.Core\CarSalesArea.Core.csproj" />
     <ProjectReference Include="..\CarSalesArea.Data\CarSalesArea.Data.csproj" />
   </ItemGroup>

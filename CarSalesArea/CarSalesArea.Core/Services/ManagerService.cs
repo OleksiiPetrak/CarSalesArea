@@ -1,47 +1,66 @@
 ﻿using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
+using CarSalesArea.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using CarSalesArea.Data.Repositories.Interfaces;
+using AutoMapper;
+using CarSalesArea.Core.Models;
 
 namespace CarSalesArea.Core.Services
 {
     public class ManagerService : IManagerService
     {
         private readonly IManagerRepository _managerRepository;
+        private readonly IMapper _mapper;
 
-        public ManagerService(IManagerRepository managerRepository)
+        public ManagerService(
+            IManagerRepository managerRepository, 
+            IMapper mapper)
         {
             _managerRepository = managerRepository;
+            _mapper = mapper;
         }
 
-        public Task CreateManagerAsync(Manager manager)
+        public async Task<long> CreateManagerAsync(ManagerModel manager)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Manager>(manager);
+            var managerId = await _managerRepository.CreateManagerAsync(entity);
+            return managerId;
         }
 
-        public Task<IEnumerable<Manager>> GetAllManagersAsync()
+        public async Task<IEnumerable<ManagerModel>> GetAllManagersAsync()
         {
-            var managers = _managerRepository.GetAllManagersCollectionAsync();
+            var managers = await _managerRepository.GetAllManagersCollectionAsync();
 
-            return managers;
+            var result = _mapper.Map<IEnumerable<ManagerModel>>(managers);
+
+            return result;
         }
 
-        public Task<Manager> GetManagerByIdAsync(long id)
+        public async Task<ManagerModel> GetManagerByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            var manager = await _managerRepository.GetManagerByIdAsync(id);
+
+            if (manager == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            var result = _mapper.Map<ManagerModel>(manager);
+
+            return result;
         }
 
-        public Task RemoveManagerAsync(long id)
+        public async Task RemoveManagerAsync(long id)
         {
-            throw new NotImplementedException();
+            await _managerRepository.DeleteManagerAsync(id);
         }
 
-        public Task UpdateManagerAsync(Manager manager)
+        public async Task UpdateManagerAsync(ManagerModel manager)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Manager>(manager);
+            await _managerRepository.UpdateManagerAsync(entity);
         }
     }
 }

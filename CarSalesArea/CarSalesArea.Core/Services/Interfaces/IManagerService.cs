@@ -1,6 +1,7 @@
 ﻿using CarSalesArea.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CarSalesArea.Core.Models;
 
 namespace CarSalesArea.Core.Services.Interfaces
 {
@@ -14,25 +15,25 @@ namespace CarSalesArea.Core.Services.Interfaces
         /// </summary>
         /// <param name="id">The manager's identifier./param>
         /// <returns>The manager entity.</returns>
-        Task<Manager> GetManagerByIdAsync(long id);
+        Task<ManagerModel> GetManagerByIdAsync(long id);
 
         /// <summary>
         /// Gets all manager collection.
         /// </summary>
         /// <returns>The manager collection.</returns>
-        Task<IEnumerable<Manager>> GetAllManagersAsync();
+        Task<IEnumerable<ManagerModel>> GetAllManagersAsync();
 
         /// <summary>
         /// Creates new manager record.
         /// </summary>
         /// <param name="manager"></param>
-        Task CreateManagerAsync(Manager manager);
+        Task<long> CreateManagerAsync(ManagerModel manager);
 
         /// <summary>
         /// Updates manager entity.
         /// </summary>
         /// <param name="manager"></param>
-        Task UpdateManagerAsync(Manager manager);
+        Task UpdateManagerAsync(ManagerModel manager);
 
         /// <summary>
         /// Removes manager entity by identifier.

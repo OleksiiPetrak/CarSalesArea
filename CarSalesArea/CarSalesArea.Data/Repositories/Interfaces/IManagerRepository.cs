@@ -26,7 +26,7 @@ namespace CarSalesArea.Data.Repositories.Interfaces
         /// Creates new manager.
         /// </summary>
         /// <param name="manager">The manager entity.</param>
-        Task CreateManagerAsync(Manager manager);
+        Task<long> CreateManagerAsync(Manager manager);
 
         /// <summary>
         /// Update existing manager.
