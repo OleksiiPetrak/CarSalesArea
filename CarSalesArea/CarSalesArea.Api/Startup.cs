@@ -1,16 +1,19 @@
- using AutoMapper;
- using CarSalesArea.Core.Extensions;
- using CarSalesArea.Core.Infrastructure;
- using Microsoft.AspNetCore.Builder;
+using AutoMapper;
+using CarSalesArea.Core.Extensions;
+using CarSalesArea.Core.Infrastructure;
+using CarSalesArea.Data.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CarSalesArea.Data.Extensions;
- using Microsoft.AspNetCore.Mvc;
- using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
- namespace CarSalesArea.Api
+namespace CarSalesArea.Api
 {
     public class Startup
     {
@@ -34,6 +37,29 @@ using CarSalesArea.Data.Extensions;
                 });
             services.AddCore(Configuration);
             services.AddData(Configuration);
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidAudience = Configuration["JWT:ValidAudience"],
+                        ValidIssuer = Configuration["JWT:ValidIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                    };
+                });
+
+
 
             services.AddApiVersioning(options =>
             {
@@ -73,6 +99,7 @@ using CarSalesArea.Data.Extensions;
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,6 +1,8 @@
 ﻿using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
+using CarSalesArea.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace CarSalesArea.Api.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     [Route("/[controller]")]
     [ApiController]
     public class ManagerController: ControllerBase

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CarSalesArea.Data.Context;
+using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories;
 using CarSalesArea.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,13 @@ namespace CarSalesArea.Data.Extensions
             IConfiguration configuration)
         {
             services.AddTransient<IManagerRepository, ManagerRepository>();
+            services.AddDbContext<CarSalesAreaDbContext>(
+                options => options.UseSqlServer(
+                    configuration.GetConnectionString("CarSalesAreaConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<CarSalesAreaDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }
