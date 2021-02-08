@@ -2,7 +2,7 @@
 
 namespace CarSalesArea.Api.ViewModels
 {
-    public class LoginModel
+    public class LoginViewModel
     {
         [Required(ErrorMessage = "User Name is required")]
         public string Username { get; set; }
