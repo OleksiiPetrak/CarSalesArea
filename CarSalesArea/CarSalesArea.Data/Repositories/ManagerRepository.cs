@@ -5,17 +5,14 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Data.Repositories
 {
-    public class ManagerRepository: IManagerRepository
+    public class ManagerRepository: BaseRepository, IManagerRepository
     {
-        private readonly string _connectionString;
-        private readonly IConfiguration _configuration;
-
         private static Lazy<string> GetAllManagers = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> GetManagerById = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> GetLatestManagerId = ScriptLoader.GetLazyEmbeddedResource<Manager>();
@@ -23,151 +20,92 @@ namespace CarSalesArea.Data.Repositories
         private static Lazy<string> UpdateManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
         private static Lazy<string> DeleteManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
 
-        public ManagerRepository(IConfiguration configuration)
+        public ManagerRepository(IConfiguration configuration) : base(configuration)
         {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("CarSalesAreaConnection");
         }
 
         public async Task<Manager> GetManagerByIdAsync(long id)
         {
-            try
+            return await WithConnection(async conn =>
             {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-
-                    var command = new CommandDefinition(
-                        GetManagerById.Value,
-                        new{});
-
-                    return (await connection.QueryAsync<Manager, SalesArea, Manager>(
-                        GetManagerById.Value,
-                        (manager, area) =>
-                        {
-                            manager.SalesArea = area;
-                            return manager;
-                        },
-                        new
-                        {
-                            Id = id
-                        },
-                        splitOn: "AreaId")).FirstOrDefault();
-                }
-            }
-            catch (SqlException e)
-            {
-                throw new Exception(e.Message);
-            }
+                return (await conn.QueryAsync<Manager, SalesArea, Manager>(
+                    GetManagerById.Value,
+                    (manager, area) =>
+                    {
+                        manager.SalesArea = area;
+                        return manager;
+                    },
+                    new
+                    {
+                        Id = id
+                    },
+                    splitOn: "AreaId")).FirstOrDefault();
+            });
         }
 
         public async Task<IEnumerable<Manager>> GetAllManagersCollectionAsync()
         {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
+            return await WithConnection(
+                async conn =>
                 {
-                    await connection.OpenAsync();
-
-                    var managers 
-                        = await connection.QueryAsync<Manager, SalesArea, Manager>(
-                            GetAllManagers.Value,
-                            (manager, area) =>
-                            {
-                                manager.SalesArea = area;
-                                return manager;
-                            },
-                            splitOn:"AreaId");
-
-                    return managers;
-                }
-            }
-            catch (SqlException e)
-            {
-                throw new Exception(e.Message);
-            }
+                    var query = await conn.QueryAsync<Manager>(GetAllManagers.Value);
+                    return query;
+                });
         }
 
         public async Task<long> CreateManagerAsync(Manager manager)
         {
-            try
+            await WithConnection(async conn =>
             {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
+                var command = new CommandDefinition(
+                    CreateManager.Value,
+                    new
+                    {
+                        manager.ManagerName,
+                        manager.Surname,
+                        AreaId = manager.SalesArea.Id
+                    });
 
-                    var command = new CommandDefinition(
-                        CreateManager.Value,
-                        new
-                        {
-                            manager.ManagerName,
-                            manager.Surname,
-                            AreaId = manager.SalesArea.Id
-                        });
+                await conn.ExecuteAsync(command);
+            });
 
-                    await connection.ExecuteAsync(command);
-
-                    return await GetLatestManagerIdAsync(connection);
-                }
-            }
-            catch (SqlException e)
-            {
-                throw new Exception(e.Message);
-            }
+            return await GetLatestManagerIdAsync(await GetConnection());
         }
 
         public async Task UpdateManagerAsync(Manager manager)
         {
-            try
+            await WithConnection(async conn =>
             {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
+                var command = new CommandDefinition(
+                    UpdateManager.Value,
+                    new
+                    {
+                        manager.Id,
+                        manager.ManagerName,
+                        manager.Surname,
+                        AreaId = manager.SalesArea.Id
+                    });
 
-                    var command = new CommandDefinition(
-                        UpdateManager.Value,
-                        new
-                        {
-                            manager.Id,
-                            manager.ManagerName,
-                            manager.Surname,
-                            AreaId = manager.SalesArea.Id
-                        });
-
-                    await connection.ExecuteAsync(command);
-                }
-            }
-            catch (SqlException e)
-            {
-                throw new Exception(e.Message);
-            }
+                await conn.ExecuteAsync(command);
+            });
         }
 
         public async Task DeleteManagerAsync(long id)
         {
-            try
+            await WithConnection(async conn =>
             {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
+                var command = new CommandDefinition(
+                    DeleteManager.Value,
+                    new
+                    {
+                        Id = id
+                    });
 
-                    var command = new CommandDefinition(
-                        DeleteManager.Value,
-                        new
-                        {
-                            Id = id
-                        });
-
-                    await connection.ExecuteAsync(command);
-                }
-            }
-            catch (SqlException e)
-            {
-                throw new Exception(e.Message);
-            }
+                await conn.ExecuteAsync(command);
+            });
         }
 
-        private async Task<long> GetLatestManagerIdAsync(SqlConnection connection)
+        private async Task<long> GetLatestManagerIdAsync(IDbConnection connection)
         {
             var command = new CommandDefinition(
                 GetLatestManagerId.Value);
