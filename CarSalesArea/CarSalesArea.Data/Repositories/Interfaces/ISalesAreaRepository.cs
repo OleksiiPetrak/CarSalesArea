@@ -14,26 +14,26 @@ namespace CarSalesArea.Data.Repositories.Interfaces
         /// </summary>
         /// <param name="id">The manager identifier.</param>
         /// <returns>Sales area entity.</returns>
-        Task<Manager> GetSalesAreaByIdAsync(long id);
+        Task<SalesArea> GetSalesAreaByIdAsync(long id);
 
         /// <summary>
         /// Retrieves all existing sales areas.
         /// </summary>
         /// <returns>sales area's collection.</returns>
-        Task<IEnumerable<Manager>> GetAllSalesAreasCollectionAsync();
+        Task<IEnumerable<SalesArea>> GetAllSalesAreasCollectionAsync();
 
         /// <summary>
         /// Creates new sales area.
         /// </summary>
         /// <param name="manager">The sales area entity.</param>
-        Task<long> CreateSalesAreaAsync(Manager manager);
+        Task<long> CreateSalesAreaAsync(SalesArea manager);
 
         /// <summary>
         /// Update existing sales area.
         /// </summary>
         /// <param name="manager">The sales area entity.</param>
         /// <returns></returns>
-        Task UpdateSalesAreaAsync(Manager manager);
+        Task UpdateSalesAreaAsync(SalesArea manager);
 
         /// <summary>
         /// Remove sales area by id.

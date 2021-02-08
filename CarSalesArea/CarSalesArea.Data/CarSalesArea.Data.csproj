@@ -8,20 +8,32 @@
 
   <ItemGroup>
     <None Remove="Resources\CreateManager.sql" />
+    <None Remove="Resources\CreateSalesArea.sql" />
     <None Remove="Resources\DeleteManager.sql" />
+    <None Remove="Resources\DeleteSalesArea.sql" />
     <None Remove="Resources\GetAllManagers.sql" />
+    <None Remove="Resources\GetAllSalesAreas.sql" />
     <None Remove="Resources\GetLatestManagerId.sql" />
+    <None Remove="Resources\GetLatestSalesAreaId.sql" />
     <None Remove="Resources\GetManagerById.sql" />
+    <None Remove="Resources\GetSalesAreaById.sql" />
     <None Remove="Resources\UpdateManager.sql" />
+    <None Remove="Resources\UpdateSalesArea.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateManager.sql" />
+    <EmbeddedResource Include="Resources\CreateSalesArea.sql" />
     <EmbeddedResource Include="Resources\DeleteManager.sql" />
+    <EmbeddedResource Include="Resources\DeleteSalesArea.sql" />
     <EmbeddedResource Include="Resources\GetAllManagers.sql" />
+    <EmbeddedResource Include="Resources\GetAllSalesAreas.sql" />
     <EmbeddedResource Include="Resources\GetLatestManagerId.sql" />
+    <EmbeddedResource Include="Resources\GetLatestSalesAreaId.sql" />
     <EmbeddedResource Include="Resources\GetManagerById.sql" />
+    <EmbeddedResource Include="Resources\GetSalesAreaById.sql" />
     <EmbeddedResource Include="Resources\UpdateManager.sql" />
+    <EmbeddedResource Include="Resources\UpdateSalesArea.sql" />
   </ItemGroup>
 
   <ItemGroup>

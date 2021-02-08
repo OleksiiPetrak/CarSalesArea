@@ -21,11 +21,9 @@ namespace CarSalesArea.Data.Repositories
         {
             try
             {
-                await using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-                    return connection;
-                }
+                var connection = new SqlConnection(_connectionString);
+                await connection.OpenAsync();
+                return connection;
             }
             catch (TimeoutException ex)
             {

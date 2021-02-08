@@ -110,7 +110,11 @@ namespace CarSalesArea.Data.Repositories
             var command = new CommandDefinition(
                 GetLatestManagerId.Value);
 
-            return await connection.QueryFirstOrDefaultAsync<long>(command);
+            var result = await connection.QueryFirstOrDefaultAsync<long>(command);
+
+            connection.Close();
+
+            return result;
         }
     }
 }

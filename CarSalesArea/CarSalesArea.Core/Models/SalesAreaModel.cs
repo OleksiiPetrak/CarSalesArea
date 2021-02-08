@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using CarSalesArea.Core.Infrastructure;
+using Newtonsoft.Json;
 
 namespace CarSalesArea.Core.Models
 {
     /// <summary>
     /// Represents model of sales area.
     /// </summary>
-    public class SalesAreaModel: BaseModel
+    public class SalesAreaModel: BaseModel, IEtaggable
     {
         /// <summary>
         /// The sales area allocation.
@@ -21,5 +23,11 @@ namespace CarSalesArea.Core.Models
         /// The collection of sales area managers.
         /// </summary>
         public IEnumerable<ManagerModel> Managers { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }

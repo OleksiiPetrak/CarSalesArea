@@ -10,6 +10,7 @@ namespace CarSalesArea.Core.Extensions
         public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<ISalesAreaService, SalesAreaService>();
 
             return services;
         }

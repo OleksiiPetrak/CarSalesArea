@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace CarSalesArea.Data.Models
 {
@@ -20,6 +21,6 @@ namespace CarSalesArea.Data.Models
         /// <summary>
         /// The collection of sales area managers.
         /// </summary>
-        public IQueryable<Manager> Managers { get; set; }
+        public IEnumerable<Manager> Managers { get; set; }
     }
 }

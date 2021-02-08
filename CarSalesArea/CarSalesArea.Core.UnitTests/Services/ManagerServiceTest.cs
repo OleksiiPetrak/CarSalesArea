@@ -5,6 +5,7 @@ using CarSalesArea.Data.Repositories.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using AutoMapper;
 using CarSalesArea.Core.Models;
@@ -42,15 +43,28 @@ namespace CarSalesArea.Core.UnitTests.Services
                 }
             };
 
+            var collectionModel = new List<ManagerModel>
+            {
+                new ManagerModel()
+                {
+                    Id = 1,
+                    ManagerName = "Name",
+                    Surname = "Surname",
+                    SalesArea = new SalesAreaModel()
+                }
+            };
+
             _managerRepositoryMock
                 .Setup(r => r.GetAllManagersCollectionAsync())
                 .ReturnsAsync(collection);
+            _mapperMock.Setup(r => r.Map<IEnumerable<ManagerModel>>(
+                It.IsAny<IEnumerable<Manager>>())).Returns(collectionModel);
 
             //Act
             var result = _managerService.GetAllManagersAsync();
 
             //Assert
-            Assert.AreEqual(collection, result.Result);
+            Assert.AreEqual(collectionModel, result.Result);
         }
 
         [TestMethod]
@@ -65,15 +79,25 @@ namespace CarSalesArea.Core.UnitTests.Services
                 SalesArea = new SalesArea()
             };
 
+            var managerModel = new ManagerModel()
+            {
+                Id = 1,
+                ManagerName = "Name",
+                Surname = "Surname",
+                SalesArea = new SalesAreaModel()
+            };
+
             _managerRepositoryMock
                 .Setup(r => r.GetManagerByIdAsync(It.IsAny<long>()))
                 .ReturnsAsync(manager);
+            _mapperMock.Setup(r => r.Map<ManagerModel>(
+                It.IsAny<Manager>())).Returns(managerModel);
 
             //Act
             var result = _managerService.GetManagerByIdAsync(1);
 
             //Assert
-            Assert.AreEqual(manager, result.Result);
+            Assert.AreEqual(managerModel, result.Result);
         }
 
         [TestMethod]
@@ -176,7 +200,7 @@ namespace CarSalesArea.Core.UnitTests.Services
             //Act
             
             //Assert
-            Assert.ThrowsExceptionAsync<NullReferenceException>(() => _managerService.CreateManagerAsync(manager));
+            Assert.ThrowsExceptionAsync<NullReferenceException>(() => _managerService.UpdateManagerAsync(manager));
         }
 
         [TestMethod]

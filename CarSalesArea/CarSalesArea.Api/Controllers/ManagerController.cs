@@ -40,8 +40,6 @@ namespace CarSalesArea.Api.Controllers
         [Etag]
         public async Task<ActionResult<ManagerModel>> GetManagerByIdAsync(long id)
         {
-            await Task.Delay(3000);
-
             var manager = await _managerService.GetManagerByIdAsync(id);
 
             if (!Request.GetEtagHandler().NoneMatch(manager))
@@ -78,6 +76,7 @@ namespace CarSalesArea.Api.Controllers
         }
 
         [HttpPut("{managerId}", Name = nameof(UpdateManagerAsync))]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateManagerAsync(
             long managerId,
             [FromBody] ManagerModel manager)
