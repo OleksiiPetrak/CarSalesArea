@@ -1,0 +1,9 @@
+BEGIN TRAN
+
+	DELETE SalesArea
+	WHERE Id = @Id;
+
+	IF(@@ERROR<>0)
+		ROLLBACK;
+
+COMMIT;
