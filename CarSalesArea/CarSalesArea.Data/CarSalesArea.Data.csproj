@@ -7,31 +7,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\CreateCar.sql" />
     <None Remove="Resources\CreateManager.sql" />
     <None Remove="Resources\CreateSalesArea.sql" />
+    <None Remove="Resources\DeleteCar.sql" />
     <None Remove="Resources\DeleteManager.sql" />
     <None Remove="Resources\DeleteSalesArea.sql" />
+    <None Remove="Resources\GetAllCars.sql" />
     <None Remove="Resources\GetAllManagers.sql" />
     <None Remove="Resources\GetAllSalesAreas.sql" />
+    <None Remove="Resources\GetCarById.sql" />
     <None Remove="Resources\GetLatestManagerId.sql" />
     <None Remove="Resources\GetLatestSalesAreaId.sql" />
     <None Remove="Resources\GetManagerById.sql" />
     <None Remove="Resources\GetSalesAreaById.sql" />
+    <None Remove="Resources\UpdateCars.sql" />
     <None Remove="Resources\UpdateManager.sql" />
     <None Remove="Resources\UpdateSalesArea.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\CreateCar.sql" />
     <EmbeddedResource Include="Resources\CreateManager.sql" />
     <EmbeddedResource Include="Resources\CreateSalesArea.sql" />
+    <EmbeddedResource Include="Resources\DeleteCar.sql" />
     <EmbeddedResource Include="Resources\DeleteManager.sql" />
     <EmbeddedResource Include="Resources\DeleteSalesArea.sql" />
+    <EmbeddedResource Include="Resources\GetAllCars.sql" />
     <EmbeddedResource Include="Resources\GetAllManagers.sql" />
     <EmbeddedResource Include="Resources\GetAllSalesAreas.sql" />
+    <EmbeddedResource Include="Resources\GetCarById.sql" />
     <EmbeddedResource Include="Resources\GetLatestManagerId.sql" />
     <EmbeddedResource Include="Resources\GetLatestSalesAreaId.sql" />
     <EmbeddedResource Include="Resources\GetManagerById.sql" />
     <EmbeddedResource Include="Resources\GetSalesAreaById.sql" />
+    <EmbeddedResource Include="Resources\UpdateCars.sql" />
     <EmbeddedResource Include="Resources\UpdateManager.sql" />
     <EmbeddedResource Include="Resources\UpdateSalesArea.sql" />
   </ItemGroup>
