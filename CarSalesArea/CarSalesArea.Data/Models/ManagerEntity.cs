@@ -3,7 +3,7 @@
     /// <summary>
     /// Represent entity of sales area's manager
     /// </summary>
-    public class Manager: BaseEntity
+    public class ManagerEntity: BaseEntity
     {
         /// <summary>
         /// The manager's name.

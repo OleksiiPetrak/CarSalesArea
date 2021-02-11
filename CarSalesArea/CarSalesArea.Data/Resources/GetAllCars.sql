@@ -15,10 +15,7 @@ SELECT
 	sa.AreaLocation,
 	sa.Capacity,
 	c.FuelTypeId,
-	ft.FuelType,
-	c.PhotoPath,
-	p.PhotoPath
+	ft.FuelType
 FROM Car c
 LEFT JOIN SalesArea sa ON c.AreaId = sa.Id
 LEFT JOIN FuelType ft ON c.FuelTypeId = ft.FuelType
-LEFT JOIN Photo p ON c.PhotoPath = p.PhotoPath

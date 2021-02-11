@@ -13,22 +13,22 @@ namespace CarSalesArea.Data.Repositories
 {
     public class ManagerRepository: BaseRepository, IManagerRepository
     {
-        private static Lazy<string> GetAllManagers = ScriptLoader.GetLazyEmbeddedResource<Manager>();
-        private static Lazy<string> GetManagerById = ScriptLoader.GetLazyEmbeddedResource<Manager>();
-        private static Lazy<string> GetLatestManagerId = ScriptLoader.GetLazyEmbeddedResource<Manager>();
-        private static Lazy<string> CreateManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
-        private static Lazy<string> UpdateManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
-        private static Lazy<string> DeleteManager = ScriptLoader.GetLazyEmbeddedResource<Manager>();
+        private static Lazy<string> GetAllManagers = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
+        private static Lazy<string> GetManagerById = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
+        private static Lazy<string> GetLatestManagerId = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
+        private static Lazy<string> CreateManager = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
+        private static Lazy<string> UpdateManager = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
+        private static Lazy<string> DeleteManager = ScriptLoader.GetLazyEmbeddedResource<ManagerEntity>();
 
         public ManagerRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
-        public async Task<Manager> GetManagerByIdAsync(long id)
+        public async Task<ManagerEntity> GetManagerByIdAsync(long id)
         {
             return await WithConnection(async conn =>
             {
-                return (await conn.QueryAsync<Manager, SalesArea, Manager>(
+                return (await conn.QueryAsync<ManagerEntity, SalesArea, ManagerEntity>(
                     GetManagerById.Value,
                     (manager, area) =>
                     {
@@ -43,11 +43,11 @@ namespace CarSalesArea.Data.Repositories
             });
         }
 
-        public async Task<IEnumerable<Manager>> GetAllManagersCollectionAsync()
+        public async Task<IEnumerable<ManagerEntity>> GetAllManagersCollectionAsync()
         {
             return await WithConnection(async conn =>
             {
-                return (await conn.QueryAsync<Manager, SalesArea, Manager>(
+                return (await conn.QueryAsync<ManagerEntity, SalesArea, ManagerEntity>(
                     GetAllManagers.Value,
                     (manager, area) =>
                     {
@@ -58,7 +58,7 @@ namespace CarSalesArea.Data.Repositories
             });
         }
 
-        public async Task<long> CreateManagerAsync(Manager manager)
+        public async Task<long> CreateManagerAsync(ManagerEntity managerEntity)
         {
             await WithConnection(async conn =>
             {
@@ -66,9 +66,9 @@ namespace CarSalesArea.Data.Repositories
                     CreateManager.Value,
                     new
                     {
-                        manager.ManagerName,
-                        manager.Surname,
-                        AreaId = manager.SalesArea.Id
+                        managerEntity.ManagerName,
+                        managerEntity.Surname,
+                        AreaId = managerEntity.SalesArea.Id
                     });
 
                 await conn.ExecuteAsync(command);
@@ -77,7 +77,7 @@ namespace CarSalesArea.Data.Repositories
             return await GetLatestManagerIdAsync(await GetConnection());
         }
 
-        public async Task UpdateManagerAsync(Manager manager)
+        public async Task UpdateManagerAsync(ManagerEntity managerEntity)
         {
             await WithConnection(async conn =>
             {
@@ -85,10 +85,10 @@ namespace CarSalesArea.Data.Repositories
                     UpdateManager.Value,
                     new
                     {
-                        manager.Id,
-                        manager.ManagerName,
-                        manager.Surname,
-                        AreaId = manager.SalesArea.Id
+                        managerEntity.Id,
+                        managerEntity.ManagerName,
+                        managerEntity.Surname,
+                        AreaId = managerEntity.SalesArea.Id
                     });
 
                 await conn.ExecuteAsync(command);

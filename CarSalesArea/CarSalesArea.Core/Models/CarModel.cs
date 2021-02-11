@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using CarSalesArea.Core.Infrastructure;
+using Newtonsoft.Json;
 
 namespace CarSalesArea.Core.Models
 {
-    public class CarModel: BaseModel
+    public class CarModel: BaseModel, IEtaggable
     {
         public string Brand { get; set; }
 
@@ -35,8 +38,14 @@ namespace CarSalesArea.Core.Models
         public FuelTypeModel FuelType { get; set; }
 
         /// <summary>
-        /// The car's related photo.
+        /// The car's related photos.
         /// </summary>
-        public PhotoModel PhotoPath { get; set; }
+        public IEnumerable<PhotoModel> Photos { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }

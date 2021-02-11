@@ -1,3 +1,5 @@
+using AutoMapper;
+using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services;
 using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
@@ -5,10 +7,7 @@ using CarSalesArea.Data.Repositories.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using AutoMapper;
-using CarSalesArea.Core.Models;
 
 namespace CarSalesArea.Core.UnitTests.Services
 {
@@ -32,9 +31,9 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void GetAllManagersAsync_ReturnsCollectionOfManager_IfAnyExist()
         {
             //Arrange
-            var collection = new List<Manager>
+            var collection = new List<ManagerEntity>
             {
-                new Manager
+                new ManagerEntity
                 {
                     Id = 1,
                     ManagerName = "Name",
@@ -58,7 +57,7 @@ namespace CarSalesArea.Core.UnitTests.Services
                 .Setup(r => r.GetAllManagersCollectionAsync())
                 .ReturnsAsync(collection);
             _mapperMock.Setup(r => r.Map<IEnumerable<ManagerModel>>(
-                It.IsAny<IEnumerable<Manager>>())).Returns(collectionModel);
+                It.IsAny<IEnumerable<ManagerEntity>>())).Returns(collectionModel);
 
             //Act
             var result = _managerService.GetAllManagersAsync();
@@ -71,7 +70,7 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void GetManagerByIdAsync_ReturnsManager_IfExist()
         {
             //Arrange
-            var manager = new Manager
+            var manager = new ManagerEntity
             {
                 Id = 1,
                 ManagerName = "Name",
@@ -91,7 +90,7 @@ namespace CarSalesArea.Core.UnitTests.Services
                 .Setup(r => r.GetManagerByIdAsync(It.IsAny<long>()))
                 .ReturnsAsync(manager);
             _mapperMock.Setup(r => r.Map<ManagerModel>(
-                It.IsAny<Manager>())).Returns(managerModel);
+                It.IsAny<ManagerEntity>())).Returns(managerModel);
 
             //Act
             var result = _managerService.GetManagerByIdAsync(1);
@@ -104,11 +103,11 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void GetManagerByIdAsync_ThrowsNullReferenceException_IfNotExist()
         {
             //Arrange
-            Manager manager = null;
+            ManagerEntity managerEntity = null;
 
             _managerRepositoryMock
                 .Setup(r => r.GetManagerByIdAsync(It.IsAny<long>()))
-                .ReturnsAsync(manager);
+                .ReturnsAsync(managerEntity);
 
             //Act
 
@@ -129,13 +128,13 @@ namespace CarSalesArea.Core.UnitTests.Services
             };
 
             _managerRepositoryMock
-                .Setup(r => r.CreateManagerAsync(It.IsAny<Manager>()));
+                .Setup(r => r.CreateManagerAsync(It.IsAny<ManagerEntity>()));
 
             //Act
             _managerService.CreateManagerAsync(manager);
 
             //Assert
-            _managerRepositoryMock.Verify(x=>x.CreateManagerAsync(It.IsAny<Manager>()),Times.Once);
+            _managerRepositoryMock.Verify(x=>x.CreateManagerAsync(It.IsAny<ManagerEntity>()),Times.Once);
         }
 
         [TestMethod]
@@ -163,13 +162,13 @@ namespace CarSalesArea.Core.UnitTests.Services
             };
 
             _managerRepositoryMock
-                .Setup(r => r.UpdateManagerAsync(It.IsAny<Manager>()));
+                .Setup(r => r.UpdateManagerAsync(It.IsAny<ManagerEntity>()));
 
             //Act
             _managerService.UpdateManagerAsync(manager);
 
             //Assert
-            _managerRepositoryMock.Verify(x => x.UpdateManagerAsync(It.IsAny<Manager>()), Times.Once);
+            _managerRepositoryMock.Verify(x => x.UpdateManagerAsync(It.IsAny<ManagerEntity>()), Times.Once);
         }
 
         [TestMethod]
@@ -194,7 +193,7 @@ namespace CarSalesArea.Core.UnitTests.Services
                 SalesArea = new SalesAreaModel()
             };
 
-            _managerRepositoryMock.Setup(x => x.UpdateManagerAsync(It.IsAny<Manager>()))
+            _managerRepositoryMock.Setup(x => x.UpdateManagerAsync(It.IsAny<ManagerEntity>()))
                 .Throws<NullReferenceException>();
 
             //Act

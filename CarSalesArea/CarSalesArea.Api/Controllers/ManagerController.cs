@@ -1,8 +1,6 @@
 ﻿using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
-using CarSalesArea.Data.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;

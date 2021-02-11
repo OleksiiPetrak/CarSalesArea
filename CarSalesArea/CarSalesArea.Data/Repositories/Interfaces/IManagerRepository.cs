@@ -10,35 +10,35 @@ namespace CarSalesArea.Data.Repositories.Interfaces
     public interface IManagerRepository
     {
         /// <summary>
-        /// Retrieves manager by identifier.
+        /// Retrieves managerEntity by identifier.
         /// </summary>
-        /// <param name="id">The manager identifier.</param>
-        /// <returns>Manager entity.</returns>
-        Task<Manager> GetManagerByIdAsync(long id);
+        /// <param name="id">The managerEntity identifier.</param>
+        /// <returns>ManagerEntity entity.</returns>
+        Task<ManagerEntity> GetManagerByIdAsync(long id);
 
         /// <summary>
         /// Retrieves all existing managers.
         /// </summary>
         /// <returns>Managers collection.</returns>
-        Task<IEnumerable<Manager>> GetAllManagersCollectionAsync();
+        Task<IEnumerable<ManagerEntity>> GetAllManagersCollectionAsync();
 
         /// <summary>
-        /// Creates new manager.
+        /// Creates new managerEntity.
         /// </summary>
-        /// <param name="manager">The manager entity.</param>
-        Task<long> CreateManagerAsync(Manager manager);
+        /// <param name="managerEntity">The managerEntity entity.</param>
+        Task<long> CreateManagerAsync(ManagerEntity managerEntity);
 
         /// <summary>
-        /// Update existing manager.
+        /// Update existing managerEntity.
         /// </summary>
-        /// <param name="manager">The manager entity.</param>
+        /// <param name="managerEntity">The managerEntity entity.</param>
         /// <returns></returns>
-        Task UpdateManagerAsync(Manager manager);
+        Task UpdateManagerAsync(ManagerEntity managerEntity);
 
         /// <summary>
-        /// Remove manager by id.
+        /// Remove managerEntity by id.
         /// </summary>
-        /// <param name="id">The manager identifier.</param>
+        /// <param name="id">The managerEntity identifier.</param>
         /// <returns></returns>
         Task DeleteManagerAsync(long id);
     }

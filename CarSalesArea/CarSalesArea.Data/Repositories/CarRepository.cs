@@ -1,69 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarSalesArea.Data.Helpers;
+﻿using CarSalesArea.Data.Helpers;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarSalesArea.Data.Repositories
 {
     public class CarRepository: BaseRepository, ICarRepository
     {
-        private static Lazy<string> GetAllCars= ScriptLoader.GetLazyEmbeddedResource<Car>();
-        private static Lazy<string> GetCarById = ScriptLoader.GetLazyEmbeddedResource<Car>();
-        private static Lazy<string> GetLatestCarId = ScriptLoader.GetLazyEmbeddedResource<Car>();
-        private static Lazy<string> CreateCar = ScriptLoader.GetLazyEmbeddedResource<Car>();
-        private static Lazy<string> UpdateCar = ScriptLoader.GetLazyEmbeddedResource<Car>();
-        private static Lazy<string> DeleteCar = ScriptLoader.GetLazyEmbeddedResource<Car>();
+        private static Lazy<string> GetAllCars= ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
+        private static Lazy<string> GetCarById = ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
+        private static Lazy<string> GetLatestCarId = ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
+        private static Lazy<string> CreateCar = ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
+        private static Lazy<string> UpdateCar = ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
+        private static Lazy<string> DeleteCar = ScriptLoader.GetLazyEmbeddedResource<CarEntity>();
 
         public CarRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
-        public async Task<Car> GetCarByIdAsync(long id)
+        public async Task<CarEntity> GetCarByIdAsync(long id)
         {
             return await WithConnection(async conn =>
             {
-                return (await conn.QueryAsync<Car, SalesArea, FuelTypeEntity, PhotoEntity, Car>(
+                return (await conn.QueryAsync<CarEntity, SalesArea, FuelTypeEntity, CarEntity>(
                     GetCarById.Value,
-                    (car, area, fuel, photo) =>
+                    (car, area, fuel) =>
                     {
                         car.SalesArea = area;
                         car.FuelType = fuel;
-                        car.PhotoEntityPath = photo;
                         return car;
                     },
                     new
                     {
                         Id = id
                     },
-                    splitOn: "AreaId, FuelTypeId, PhotoEntityPath")).FirstOrDefault();
+                    splitOn: "AreaId, FuelTypeId")).FirstOrDefault();
             });
         }
 
-        public async Task<IEnumerable<Car>> GetAllCarsCollectionAsync()
+        public async Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync()
         {
             return await WithConnection(async conn =>
             {
-                return (await conn.QueryAsync<Car, SalesArea, FuelTypeEntity, PhotoEntity, Car>(
+                return (await conn.QueryAsync<CarEntity, SalesArea, FuelTypeEntity, CarEntity>(
                     GetAllCars.Value,
-                    (car, area, fuel, photo) =>
+                    (car, area, fuel) =>
                     {
                         car.SalesArea = area;
                         car.FuelType = fuel;
-                        car.PhotoEntityPath = photo;
                         return car;
                     },
-                    splitOn: "AreaId, FuelTypeId, PhotoEntityPath"));
+                    splitOn: "AreaId, FuelTypeId"));
             });
         }
 
-        public async Task<long> CreateManagerAsync(Car car)
+        public async Task<long> CreateManagerAsync(CarEntity carEntity)
         {
             await WithConnection(async conn =>
             {
@@ -71,19 +68,18 @@ namespace CarSalesArea.Data.Repositories
                     CreateCar.Value,
                     new
                     {
-                        car.Brand,
-                        car.Model,
-                        car.Year,
-                        car.EngineVolume,
-                        car.Mileage,
-                        car.Description,
-                        car.Price,
-                        car.VinCode,
-                        car.Color,
-                        car.Body,
-                        AreaId = car.SalesArea.Id,
-                        FuelTypeId = car.FuelType.FuelType,
-                        PhotoPath = car.PhotoEntityPath.PhotoPath
+                        carEntity.Brand,
+                        carEntity.Model,
+                        carEntity.Year,
+                        carEntity.EngineVolume,
+                        carEntity.Mileage,
+                        carEntity.Description,
+                        carEntity.Price,
+                        carEntity.VinCode,
+                        carEntity.Color,
+                        carEntity.Body,
+                        AreaId = carEntity.SalesArea.Id,
+                        FuelTypeId = carEntity.FuelType.FuelType,
                     });
 
                 await conn.ExecuteAsync(command);
@@ -92,7 +88,7 @@ namespace CarSalesArea.Data.Repositories
             return await GetLatestCarIdAsync(await GetConnection());
         }
 
-        public async Task UpdateCarAsync(Car car)
+        public async Task UpdateCarAsync(CarEntity carEntity)
         {
             await WithConnection(async conn =>
             {
@@ -100,20 +96,19 @@ namespace CarSalesArea.Data.Repositories
                     UpdateCar.Value,
                     new
                     {
-                        car.Id,
-                        car.Brand,
-                        car.Model,
-                        car.Year,
-                        car.EngineVolume,
-                        car.Mileage,
-                        car.Description,
-                        car.Price,
-                        car.VinCode,
-                        car.Color,
-                        car.Body,
-                        AreaId = car.SalesArea.Id,
-                        FuelTypeId = car.FuelType.FuelType,
-                        PhotoPath = car.PhotoEntityPath.PhotoPath
+                        carEntity.Id,
+                        carEntity.Brand,
+                        carEntity.Model,
+                        carEntity.Year,
+                        carEntity.EngineVolume,
+                        carEntity.Mileage,
+                        carEntity.Description,
+                        carEntity.Price,
+                        carEntity.VinCode,
+                        carEntity.Color,
+                        carEntity.Body,
+                        AreaId = carEntity.SalesArea.Id,
+                        FuelTypeId = carEntity.FuelType.FuelType,
                     });
 
                 await conn.ExecuteAsync(command);

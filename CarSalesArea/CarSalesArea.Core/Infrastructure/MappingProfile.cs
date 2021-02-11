@@ -9,7 +9,10 @@ namespace CarSalesArea.Core.Infrastructure
         public MappingProfile()
         {
             CreateMap<SalesArea, SalesAreaModel>().ReverseMap();
-            CreateMap<Manager, ManagerModel>().ReverseMap();
+            CreateMap<ManagerEntity, ManagerModel>().ReverseMap();
+            CreateMap<CarEntity, CarModel>().ReverseMap();
+            CreateMap<FuelTypeEntity, FuelTypeModel>().ReverseMap();
+            CreateMap<PhotoEntity, PhotoModel>().ReverseMap();
         }
     }
 }

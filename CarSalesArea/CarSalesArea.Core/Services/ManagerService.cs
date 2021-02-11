@@ -24,7 +24,7 @@ namespace CarSalesArea.Core.Services
 
         public async Task<long> CreateManagerAsync(ManagerModel manager)
         {
-            var entity = _mapper.Map<Manager>(manager);
+            var entity = _mapper.Map<ManagerEntity>(manager);
             var managerId = await _managerRepository.CreateManagerAsync(entity);
             return managerId;
         }
@@ -59,7 +59,7 @@ namespace CarSalesArea.Core.Services
 
         public async Task UpdateManagerAsync(ManagerModel manager)
         {
-            var entity = _mapper.Map<Manager>(manager);
+            var entity = _mapper.Map<ManagerEntity>(manager);
             await _managerRepository.UpdateManagerAsync(entity);
         }
     }

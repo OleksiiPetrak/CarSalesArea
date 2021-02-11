@@ -21,6 +21,6 @@ namespace CarSalesArea.Data.Models
         /// <summary>
         /// The collection of sales area managers.
         /// </summary>
-        public IEnumerable<Manager> Managers { get; set; }
+        public IEnumerable<ManagerEntity> Managers { get; set; }
     }
 }

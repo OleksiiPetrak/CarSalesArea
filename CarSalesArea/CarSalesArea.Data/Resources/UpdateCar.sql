@@ -13,8 +13,7 @@ BEGIN TRAN
 		Color = @Color,
 		Body = @Body,
 		AreaId = @AreaId,
-		FuelTypeId = @FuelTypeId,
-		PhotoPath = @PhotoPath
+		FuelTypeId = @FuelTypeId
 	WHERE Id = @Id;
 
 	IF(@@ERROR<>0)

@@ -12,35 +12,35 @@ namespace CarSalesArea.Data.Repositories.Interfaces
     public interface ICarRepository
     {
         /// <summary>
-        /// Retrieves car by identifier.
+        /// Retrieves carEntity by identifier.
         /// </summary>
-        /// <param name="id">The car identifier.</param>
-        /// <returns>Car entity.</returns>
-        Task<Car> GetCarByIdAsync(long id);
+        /// <param name="id">The carEntity identifier.</param>
+        /// <returns>CarEntity entity.</returns>
+        Task<CarEntity> GetCarByIdAsync(long id);
 
         /// <summary>
         /// Retrieves all existing cars.
         /// </summary>
         /// <returns>Cars collection.</returns>
-        Task<IEnumerable<Car>> GetAllCarsCollectionAsync();
+        Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync();
 
         /// <summary>
-        /// Creates new car.
+        /// Creates new carEntity.
         /// </summary>
-        /// <param name="manager">The car entity.</param>
-        Task<long> CreateManagerAsync(Car car);
+        /// <param name="manager">The carEntity entity.</param>
+        Task<long> CreateManagerAsync(CarEntity carEntity);
 
         /// <summary>
-        /// Update existing car.
+        /// Update existing carEntity.
         /// </summary>
-        /// <param name="manager">The car entity.</param>
+        /// <param name="manager">The carEntity entity.</param>
         /// <returns></returns>
-        Task UpdateCarAsync(Car car);
+        Task UpdateCarAsync(CarEntity carEntity);
 
         /// <summary>
-        /// Remove car by id.
+        /// Remove carEntity by id.
         /// </summary>
-        /// <param name="id">The car identifier.</param>
+        /// <param name="id">The carEntity identifier.</param>
         /// <returns></returns>
         Task DeleteCarAsync(long id);
     }

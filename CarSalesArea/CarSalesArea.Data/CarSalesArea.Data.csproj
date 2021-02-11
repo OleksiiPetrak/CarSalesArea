@@ -22,6 +22,7 @@
     <None Remove="Resources\GetLatestSalesAreaId.sql" />
     <None Remove="Resources\GetManagerById.sql" />
     <None Remove="Resources\GetSalesAreaById.sql" />
+    <None Remove="Resources\UpdateCar.sql" />
     <None Remove="Resources\UpdateCars.sql" />
     <None Remove="Resources\UpdateManager.sql" />
     <None Remove="Resources\UpdateSalesArea.sql" />
@@ -43,7 +44,7 @@
     <EmbeddedResource Include="Resources\GetLatestSalesAreaId.sql" />
     <EmbeddedResource Include="Resources\GetManagerById.sql" />
     <EmbeddedResource Include="Resources\GetSalesAreaById.sql" />
-    <EmbeddedResource Include="Resources\UpdateCars.sql" />
+    <EmbeddedResource Include="Resources\UpdateCar.sql" />
     <EmbeddedResource Include="Resources\UpdateManager.sql" />
     <EmbeddedResource Include="Resources\UpdateSalesArea.sql" />
   </ItemGroup>

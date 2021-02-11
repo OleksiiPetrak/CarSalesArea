@@ -12,8 +12,7 @@ BEGIN TRAN
 		@Color,
 		@Body,
 		@AreaId,
-		@FuelTypeId,
-		@PhotoPath);
+		@FuelTypeId);
 
 	IF(@@ERROR<>0)
 		ROLLBACK;
