@@ -17,6 +17,7 @@ namespace CarSalesArea.Data.Extensions
         {
             services.AddTransient<IManagerRepository, ManagerRepository>();
             services.AddTransient<ISalesAreaRepository, SalesAreaRepository>();
+            services.AddTransient<ICarRepository, CarRepository>();
             services.AddDbContext<CarSalesAreaDbContext>(
                 options => options.UseSqlServer(
                     configuration.GetConnectionString("CarSalesAreaConnection")));

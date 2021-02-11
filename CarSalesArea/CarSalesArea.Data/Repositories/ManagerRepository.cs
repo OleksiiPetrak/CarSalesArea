@@ -45,12 +45,17 @@ namespace CarSalesArea.Data.Repositories
 
         public async Task<IEnumerable<Manager>> GetAllManagersCollectionAsync()
         {
-            return await WithConnection(
-                async conn =>
-                {
-                    var query = await conn.QueryAsync<Manager>(GetAllManagers.Value);
-                    return query;
-                });
+            return await WithConnection(async conn =>
+            {
+                return (await conn.QueryAsync<Manager, SalesArea, Manager>(
+                    GetAllManagers.Value,
+                    (manager, area) =>
+                    {
+                        manager.SalesArea = area;
+                        return manager;
+                    },
+                    splitOn: "AreaId"));
+            });
         }
 
         public async Task<long> CreateManagerAsync(Manager manager)

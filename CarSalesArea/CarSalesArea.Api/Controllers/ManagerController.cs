@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CarSalesArea.Api.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    //[Authorize(Roles = UserRoles.Admin)]
     [Route("/[controller]")]
     [ApiController]
     public class ManagerController: ControllerBase

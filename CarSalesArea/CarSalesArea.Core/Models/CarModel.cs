@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CarSalesArea.Data.Models
+namespace CarSalesArea.Core.Models
 {
-    public class Car: BaseEntity
+    public class CarModel: BaseModel
     {
         public string Brand { get; set; }
 
@@ -27,16 +27,16 @@ namespace CarSalesArea.Data.Models
         /// <summary>
         /// The car's related sales area.
         /// </summary>
-        public SalesArea SalesArea { get; set; }
+        public SalesAreaModel SalesArea { get; set; }
 
         /// <summary>
         /// The car's related fuel type.
         /// </summary>
-        public FuelTypeEntity FuelType { get; set; }
+        public FuelTypeModel FuelType { get; set; }
 
         /// <summary>
         /// The car's related photo.
         /// </summary>
-        public PhotoEntity PhotoEntityPath { get; set; }
+        public PhotoModel PhotoPath { get; set; }
     }
 }

@@ -1,0 +1,2 @@
+SELECT MAX(Id)
+FROM Car

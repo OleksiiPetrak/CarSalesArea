@@ -1,6 +1,6 @@
 ﻿namespace CarSalesArea.Data.Models
 {
-    public class Photo
+    public class PhotoEntity
     {
         public string PhotoPath { get; set; }
     }
