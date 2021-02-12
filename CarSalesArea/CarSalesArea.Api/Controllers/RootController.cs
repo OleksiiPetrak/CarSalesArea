@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarSalesArea.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarSalesArea.Api.Controllers
@@ -15,13 +16,10 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(200)]
         public IActionResult GetRoot()
         {
-            var response = new
+            var response = new RootResponse()
             {
-                href = Url.Link(nameof(GetRoot), null),
-                managers = new
-                {
-                    href = Url.Link(nameof(ManagerController.GetAllManagersAsync), null)
-                }
+                Self = Link.To(nameof(GetRoot)),
+                Managers = Link.To(nameof(ManagerController.GetAllManagersAsync))
             };
 
             return Ok(response);

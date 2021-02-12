@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CarSalesArea.Core.Filters;
 
 namespace CarSalesArea.Api
 {
@@ -34,7 +35,8 @@ namespace CarSalesArea.Api
                     {
                         Duration = 36000
                     });
-                });
+                    options.Filters.Add<LinkRewriterFilter>();
+                }).AddNewtonsoftJson();
             services.AddCore(Configuration);
             services.AddData(Configuration);
 

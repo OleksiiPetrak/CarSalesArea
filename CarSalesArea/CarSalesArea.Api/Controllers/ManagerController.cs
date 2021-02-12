@@ -34,11 +34,19 @@ namespace CarSalesArea.Api.Controllers
         [HttpGet("{id}", Name = nameof(GetManagerByIdAsync))]
         [ProducesResponseType(200)]
         [ProducesResponseType(304)]
+        [ProducesResponseType(404)]
         [ResponseCache(CacheProfileName = "Static")]
         [Etag]
         public async Task<ActionResult<ManagerModel>> GetManagerByIdAsync(long id)
         {
             var manager = await _managerService.GetManagerByIdAsync(id);
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+            
+            manager.Href = Url.Link(nameof(GetManagerByIdAsync), new{id});
 
             if (!Request.GetEtagHandler().NoneMatch(manager))
             {
