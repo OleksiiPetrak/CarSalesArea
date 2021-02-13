@@ -3,7 +3,10 @@ using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CarSalesArea.Api.ViewModels;
 
 namespace CarSalesArea.Api.Controllers
 {
@@ -12,19 +15,29 @@ namespace CarSalesArea.Api.Controllers
     public class SalesAreaController : ControllerBase
     {
         private readonly ISalesAreaService _salesAreaService;
+        private readonly IMapper _mapper;
 
-        public SalesAreaController(ISalesAreaService salesAreaService)
+        public SalesAreaController(ISalesAreaService salesAreaService, IMapper mapper)
         {
             _salesAreaService = salesAreaService;
+            _mapper = mapper;
         }
 
         [HttpGet("sales-areas", Name = nameof(GetAllSalesAreaAsync))]
         [ProducesResponseType(200)]
         [Etag]
-        public async Task<ActionResult<IEnumerable<SalesAreaModel>>> GetAllSalesAreaAsync()
+        public async Task<ActionResult<Collection<SalesAreaViewModel>>> GetAllSalesAreaAsync()
         {
             var result = await _salesAreaService.GetAllSalesAreasAsync();
-            return Ok(result);
+            var areaViewModels = _mapper.Map<IEnumerable<SalesAreaViewModel>>(result);
+
+            var collection = new Collection<SalesAreaViewModel>()
+            {
+                Self = Link.ToCollection(nameof(GetAllSalesAreaAsync)),
+                Value = areaViewModels.ToArray()
+            };
+
+            return Ok(collection);
         }
 
         [HttpGet("{areaId}", Name = nameof(GetSalesAreaByIdAsync))]
@@ -32,22 +45,25 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(304)]
         [ResponseCache(CacheProfileName = "Static")]
         [Etag]
-        public async Task<ActionResult<SalesAreaModel>> GetSalesAreaByIdAsync(long areaId)
+        public async Task<ActionResult<SalesAreaViewModel>> GetSalesAreaByIdAsync(long areaId)
         {
             var result = await _salesAreaService.GetSalesAreaByIdAsync(areaId);
+            
+            var areaViewModel = _mapper.Map<SalesAreaViewModel>(result);
 
-            if (!Request.GetEtagHandler().NoneMatch(result))
+            if (!Request.GetEtagHandler().NoneMatch(areaViewModel))
             {
-                return StatusCode(304, result);
+                return StatusCode(304, areaViewModel);
             }
 
-            return Ok(result);
+            return Ok(areaViewModel);
         }
 
         [HttpPost("sales-area", Name = nameof(CreateSalesAreaAsync))]
         [ProducesResponseType(201)]
-        public async Task<ActionResult> CreateSalesAreaAsync([FromBody] SalesAreaModel areaModel)
+        public async Task<ActionResult> CreateSalesAreaAsync([FromBody] SalesAreaViewModel area)
         {
+            var areaModel = _mapper.Map<SalesAreaModel>(area);
             var areaId = await _salesAreaService.CreateSalesAreaAsync(areaModel);
 
             var link = Url.Link(nameof(GetSalesAreaByIdAsync),
@@ -62,8 +78,9 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateSalesAreaAsync(
             long areaId,
-            [FromBody]SalesAreaModel areaModel)
+            [FromBody]SalesAreaViewModel area)
         {
+            var areaModel = _mapper.Map<SalesAreaModel>(area);
             areaModel.Id = areaId;
             await _salesAreaService.UpdateSalesAreaAsync(areaModel);
 

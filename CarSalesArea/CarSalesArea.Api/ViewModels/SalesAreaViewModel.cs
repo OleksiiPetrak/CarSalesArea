@@ -2,12 +2,12 @@
 using CarSalesArea.Core.Infrastructure;
 using Newtonsoft.Json;
 
-namespace CarSalesArea.Core.Models
+namespace CarSalesArea.Api.ViewModels
 {
     /// <summary>
-    /// Represents model of sales area.
+    /// Represents view model of sales area.
     /// </summary>
-    public class SalesAreaModel: BaseModel
+    public class SalesAreaViewModel: BaseViewModel, IEtaggable
     {
         /// <summary>
         /// The sales area allocation.
@@ -22,6 +22,12 @@ namespace CarSalesArea.Core.Models
         /// <summary>
         /// The collection of sales area managers.
         /// </summary>
-        public IEnumerable<ManagerModel> Managers { get; set; }
+        public IEnumerable<ManagerViewModel> Managers { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CarSalesArea.Api.ViewModels;
 using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
@@ -14,19 +16,28 @@ namespace CarSalesArea.Api.Controllers
     public class CarController: ControllerBase
     {
         private readonly ICarService _carService;
+        private readonly IMapper _mapper;
 
-        public CarController(ICarService carService)
+        public CarController(ICarService carService, IMapper mapper)
         {
             _carService = carService;
+            _mapper = mapper;
         }
 
         [HttpGet("cars", Name = nameof(GetAllCarsAsync))]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<IEnumerable<CarModel>>> GetAllCarsAsync()
+        public async Task<ActionResult<Collection<CarViewModel>>> GetAllCarsAsync()
         {
-            var carCollection = await _carService.GetAllCarsAsync();
+            var cars = await _carService.GetAllCarsAsync();
+            var carViewModels = _mapper.Map<IEnumerable<CarViewModel>>(cars);
 
-            return Ok(carCollection);
+            var collection = new Collection<CarViewModel>()
+            {
+                Self = Link.ToCollection(nameof(GetAllCarsAsync)),
+                Value = carViewModels.ToArray()
+            };
+
+            return Ok(collection);
         }
 
         [HttpGet("{id}", Name = nameof(GetCarByIdAsync))]
@@ -34,23 +45,26 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(304)]
         [ResponseCache(Duration = 300)]
         [Etag]
-        public async Task<ActionResult<CarModel>> GetCarByIdAsync(long id)
+        public async Task<ActionResult<CarViewModel>> GetCarByIdAsync(long id)
         {
             var car = await _carService.GetCarByIdAsync(id);
 
-            if (!Request.GetEtagHandler().NoneMatch(car))
+            var carViewModel = _mapper.Map<CarViewModel>(car);
+
+            if (!Request.GetEtagHandler().NoneMatch(carViewModel))
             {
-                return StatusCode(304, car);
+                return StatusCode(304, carViewModel);
             }
 
-            return Ok(car);
+            return Ok(carViewModel);
         }
 
         [HttpPost("car", Name = nameof(CreateCarAsync))]
         [ProducesResponseType(201)]
-        public async Task<ActionResult> CreateCarAsync([FromBody] CarModel car)
+        public async Task<ActionResult> CreateCarAsync([FromBody] CarViewModel car)
         {
-            var carId = await _carService.CreateCarAsync(car);
+            var carModel = _mapper.Map<CarModel>(car);
+            var carId = await _carService.CreateCarAsync(carModel);
 
             var link = Url.Link(nameof(GetCarByIdAsync),
                 new { id = carId});
@@ -60,10 +74,12 @@ namespace CarSalesArea.Api.Controllers
 
         [HttpPut("{id}", Name = nameof(UpdateCarAsync))]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateCarAsync(long id, [FromBody] CarModel car)
+        public async Task<IActionResult> UpdateCarAsync(long id, [FromBody] CarViewModel car)
         {
             car.Id = id;
-            await _carService.UpdateCarAsync(car);
+            var carModel = _mapper.Map<CarModel>(car);
+            
+            await _carService.UpdateCarAsync(carModel);
 
             return Ok();
         }

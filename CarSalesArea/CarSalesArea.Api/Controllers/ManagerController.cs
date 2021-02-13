@@ -1,10 +1,13 @@
-﻿using CarSalesArea.Core.Infrastructure;
+﻿using System.Collections;
+using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CarSalesArea.Api.ViewModels;
 
 namespace CarSalesArea.Api.Controllers
 {
@@ -14,21 +17,33 @@ namespace CarSalesArea.Api.Controllers
     public class ManagerController: ControllerBase
     {
         private readonly IManagerService _managerService;
+        private readonly IMapper _mapper;
 
-        public ManagerController(IManagerService managerService)
+        public ManagerController(
+            IManagerService managerService,
+            IMapper mapper)
         {
             _managerService = managerService;
+            _mapper = mapper;
         }
 
         [HttpGet ("managers", Name = nameof(GetAllManagersAsync))]
         [ProducesResponseType(200)]
         [ResponseCache(CacheProfileName = "Static")]
         [Etag]
-        public async Task<ActionResult<IEnumerable<ManagerModel>>> GetAllManagersAsync()
+        public async Task<ActionResult<Collection<ManagerViewModel>>> GetAllManagersAsync()
         {
             var managers = (await _managerService.GetAllManagersAsync()).ToList();
 
-            return Ok(managers);
+            var managerViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managers);
+
+            var collection = new Collection<ManagerViewModel>()
+            {
+                Self = Link.ToCollection(nameof(GetAllManagersAsync)),
+                Value = managerViewModels.ToArray()
+            };
+
+            return Ok(collection);
         }
 
         [HttpGet("{id}", Name = nameof(GetManagerByIdAsync))]
@@ -37,7 +52,7 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(404)]
         [ResponseCache(CacheProfileName = "Static")]
         [Etag]
-        public async Task<ActionResult<ManagerModel>> GetManagerByIdAsync(long id)
+        public async Task<ActionResult<ManagerViewModel>> GetManagerByIdAsync(long id)
         {
             var manager = await _managerService.GetManagerByIdAsync(id);
 
@@ -45,24 +60,28 @@ namespace CarSalesArea.Api.Controllers
             {
                 return NotFound();
             }
-            
+
             manager.Href = Url.Link(nameof(GetManagerByIdAsync), new{id});
 
-            if (!Request.GetEtagHandler().NoneMatch(manager))
+            var managerViewModel = _mapper.Map<ManagerViewModel>(manager);
+
+            if (!Request.GetEtagHandler().NoneMatch(managerViewModel))
             {
-                return StatusCode(304, manager);
+                return StatusCode(304, managerViewModel);
             }
 
-            return Ok(manager);
+            return Ok(managerViewModel);
         }
 
         [HttpPost("{areaId}/manager", Name = nameof(CreateManagerAsync))]
         [ProducesResponseType(201)]
         public async Task<ActionResult> CreateManagerAsync(
             long areaId,
-            [FromBody] ManagerModel manager)
+            [FromBody] ManagerViewModel manager)
         {
-            var managerId = await _managerService.CreateManagerAsync(manager);
+            var managerModel = _mapper.Map<ManagerModel>(manager);
+
+            var managerId = await _managerService.CreateManagerAsync(managerModel);
 
             var link = Url.Link(nameof(GetManagerByIdAsync),
                 new {id = managerId});
@@ -85,10 +104,11 @@ namespace CarSalesArea.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> UpdateManagerAsync(
             long managerId,
-            [FromBody] ManagerModel manager)
+            [FromBody] ManagerViewModel manager)
         {
-            manager.Id = managerId;
-            await _managerService.UpdateManagerAsync(manager);
+            var managerModel = _mapper.Map<ManagerModel>(manager);
+            managerModel.Id = managerId;
+            await _managerService.UpdateManagerAsync(managerModel);
 
             return Ok();
         }

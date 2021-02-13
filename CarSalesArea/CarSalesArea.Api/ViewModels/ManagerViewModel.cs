@@ -1,12 +1,12 @@
 ﻿using CarSalesArea.Core.Infrastructure;
 using Newtonsoft.Json;
 
-namespace CarSalesArea.Core.Models
+namespace CarSalesArea.Api.ViewModels
 {
     /// <summary>
-    /// Represent model of sales area's manager
+    /// Represent view model of sales area's manager
     /// </summary>
-    public class ManagerModel: BaseModel
+    public class ManagerViewModel: BaseViewModel, IEtaggable
     {
         /// <summary>
         /// The manager's name.
@@ -21,6 +21,12 @@ namespace CarSalesArea.Core.Models
         /// <summary>
         /// The manager's related sales area.
         /// </summary>
-        public SalesAreaModel SalesArea { get; set; }
+        public SalesAreaViewModel SalesArea { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }

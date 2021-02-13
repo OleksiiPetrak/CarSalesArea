@@ -19,7 +19,7 @@ namespace CarSalesArea.Api.Controllers
             var response = new RootResponse()
             {
                 Self = Link.To(nameof(GetRoot)),
-                Managers = Link.To(nameof(ManagerController.GetAllManagersAsync))
+                Managers = Link.ToCollection(nameof(ManagerController.GetAllManagersAsync))
             };
 
             return Ok(response);

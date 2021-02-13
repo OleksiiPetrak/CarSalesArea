@@ -1,6 +1,5 @@
-using AutoMapper;
 using CarSalesArea.Core.Extensions;
-using CarSalesArea.Core.Infrastructure;
+using CarSalesArea.Core.Filters;
 using CarSalesArea.Data.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using CarSalesArea.Core.Filters;
 
 namespace CarSalesArea.Api
 {
@@ -77,7 +75,11 @@ namespace CarSalesArea.Api
             services.AddSwaggerDocument();
             services.AddAutoMapper(
                 options
-                    => options.AddProfile<MappingProfile>());
+                    =>
+                {
+                    options.AddProfile<CarSalesArea.Core.Infrastructure.MappingProfile>();
+                    options.AddProfile<CarSalesArea.Api.Infrastructure.MappingProfile>();
+                });
             services.AddResponseCaching();
         }
 

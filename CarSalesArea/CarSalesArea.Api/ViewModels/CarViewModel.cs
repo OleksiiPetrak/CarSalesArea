@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using CarSalesArea.Core.Infrastructure;
+﻿using CarSalesArea.Core.Infrastructure;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
-namespace CarSalesArea.Core.Models
+namespace CarSalesArea.Api.ViewModels
 {
-    public class CarModel: BaseModel
+    public class CarViewModel: BaseViewModel, IEtaggable
     {
         public string Brand { get; set; }
 
@@ -30,16 +30,22 @@ namespace CarSalesArea.Core.Models
         /// <summary>
         /// The car's related sales area.
         /// </summary>
-        public SalesAreaModel SalesArea { get; set; }
+        public SalesAreaViewModel SalesArea { get; set; }
 
         /// <summary>
         /// The car's related fuel type.
         /// </summary>
-        public FuelTypeModel FuelType { get; set; }
+        public FuelTypeViewModel FuelType { get; set; }
 
         /// <summary>
         /// The car's related photos.
         /// </summary>
-        public IEnumerable<PhotoModel> Photos { get; set; }
+        public IEnumerable<PhotoViewModel> Photos { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }
