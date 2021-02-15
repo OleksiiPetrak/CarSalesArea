@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +11,23 @@ namespace CarSalesArea.Api.Controllers
     {
         [HttpGet(Name = nameof(GetRoot))]
         [ProducesResponseType(200)]
+        [ProducesResponseType(304)]
+        [ResponseCache(CacheProfileName = "Static")]
+        [Etag]
         public IActionResult GetRoot()
         {
             var response = new RootResponse()
             {
                 Self = Link.To(nameof(GetRoot)),
-                Managers = Link.ToCollection(nameof(ManagerController.GetAllManagersAsync))
+                Managers = Link.ToCollection(nameof(ManagerController.GetAllManagersAsync)),
+                Cars = Link.ToCollection(nameof(CarController.GetAllCarsAsync)),
+                Areas = Link.ToCollection(nameof(SalesAreaController.GetAllSalesAreaAsync))
             };
+
+            if (!Request.GetEtagHandler().NoneMatch(response))
+            {
+                return StatusCode(304, response);
+            }
 
             return Ok(response);
         }
