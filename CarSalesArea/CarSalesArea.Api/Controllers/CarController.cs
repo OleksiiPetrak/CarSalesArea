@@ -26,16 +26,17 @@ namespace CarSalesArea.Api.Controllers
 
         [HttpGet("cars", Name = nameof(GetAllCarsAsync))]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<Collection<CarViewModel>>> GetAllCarsAsync()
+        public async Task<ActionResult<Collection<CarViewModel>>> GetAllCarsAsync(
+            [FromQuery] PagingOptions pagingOptions = null)
         {
-            var cars = await _carService.GetAllCarsAsync();
-            var carViewModels = _mapper.Map<IEnumerable<CarViewModel>>(cars);
+            var carsPaged = await _carService.GetAllCarsAsync(pagingOptions);
+            var carViewModels = _mapper.Map<IEnumerable<CarViewModel>>(carsPaged.Items);
 
-            var collection = new Collection<CarViewModel>()
-            {
-                Self = Link.ToCollection(nameof(GetAllCarsAsync)),
-                Value = carViewModels.ToArray()
-            };
+            var collection = PagedCollection<CarViewModel>.Create(
+                Link.ToCollection(nameof(GetAllCarsAsync)),
+                carViewModels.ToArray(),
+                carsPaged.TotalSize,
+                pagingOptions);
 
             return Ok(collection);
         }

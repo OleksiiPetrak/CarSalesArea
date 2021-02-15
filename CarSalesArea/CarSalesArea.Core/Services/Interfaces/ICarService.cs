@@ -1,5 +1,4 @@
 ﻿using CarSalesArea.Core.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Services.Interfaces
@@ -20,7 +19,7 @@ namespace CarSalesArea.Core.Services.Interfaces
         /// Gets all car collection.
         /// </summary>
         /// <returns>The car collection.</returns>
-        Task<IEnumerable<CarModel>> GetAllCarsAsync();
+        Task<PagedResults<CarModel>> GetAllCarsAsync(PagingOptions pagingOptions);
 
         /// <summary>
         /// Creates new car record.

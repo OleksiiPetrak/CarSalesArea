@@ -73,13 +73,19 @@ namespace CarSalesArea.Core.UnitTests.Services
                 }
             };
 
+            var pagingOptions = new PagingOptions()
+            {
+                Limit = 10,
+                Offset = 0
+            };
+
             _carRepositoryMock.Setup(r => r.GetAllCarsCollectionAsync())
                 .ReturnsAsync(collection);
             _mapperMock.Setup(r => r.Map<IEnumerable<CarModel>>(
                 It.IsAny<IEnumerable<CarEntity>>())).Returns(collectionModel);
 
             //Act
-            var result = _carService.GetAllCarsAsync();
+            var result = _carService.GetAllCarsAsync(pagingOptions);
 
             //Assert
             Assert.AreEqual(collectionModel, result.Result);

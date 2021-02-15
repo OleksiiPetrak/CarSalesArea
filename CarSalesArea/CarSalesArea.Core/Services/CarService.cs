@@ -4,6 +4,7 @@ using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Services
@@ -27,12 +28,20 @@ namespace CarSalesArea.Core.Services
             return carModel;
         }
 
-        public async Task<IEnumerable<CarModel>> GetAllCarsAsync()
+        public async Task<PagedResults<CarModel>> GetAllCarsAsync(PagingOptions pagingOptions)
         {
             var carEntityCollection = await _carRepository.GetAllCarsCollectionAsync();
             var carModelCollection = _mapper.Map<IEnumerable<CarModel>>(carEntityCollection);
 
-            return carModelCollection;
+            var pagedCars = carModelCollection
+                .Skip(pagingOptions.Offset.Value)
+                .Take(pagingOptions.Limit.Value);
+
+            return new PagedResults<CarModel>()
+            {
+                Items = pagedCars,
+                TotalSize = carModelCollection.Count()
+            };
         }
 
         public async Task<long> CreateCarAsync(CarModel car)
