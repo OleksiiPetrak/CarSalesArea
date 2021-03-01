@@ -15,6 +15,7 @@ namespace CarSalesArea.Core.Infrastructure
             CreateMap<FuelTypeEntity, FuelTypeModel>().ReverseMap();
             CreateMap<PhotoEntity, PhotoModel>().ReverseMap();
             CreateMap<Data.Models.PagingOptions, PagingOptions>().ReverseMap();
+            CreateMap<Data.Models.SortOrder, Models.SortOrder>().ReverseMap();
         }
     }
 }

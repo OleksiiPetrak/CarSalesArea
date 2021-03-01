@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CarSalesArea.Data.Models
 {
@@ -18,7 +17,7 @@ namespace CarSalesArea.Data.Models
         /// <summary>
         /// List of searching across all items.
         /// </summary>
-        public Dictionary<int, string> Search { get; set; } = new Dictionary<int, string>();
+        public Dictionary<string, string> Search { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// List of properties orders.
