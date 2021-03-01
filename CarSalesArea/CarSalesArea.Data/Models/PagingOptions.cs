@@ -1,26 +1,19 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Data.SqlClient;
 
-namespace CarSalesArea.Core.Models
+namespace CarSalesArea.Data.Models
 {
-    /// <summary>
-    /// Represent options to retrieve <see cref="PagingOptions"/>
-    /// </summary>
     public class PagingOptions
     {
         /// <summary>
         /// Size of skipped items.
         /// </summary>
-        [Range(0, 999999, ErrorMessage = "Offset must be not negative number")]
-        public int? Offset { get; set; } = 0;
+        public int Offset { get; set; } = 0;
 
         /// <summary>
         /// Size of selected items.
         /// </summary>
-        [Range(1, 100, ErrorMessage = "Limit must be greater than 0 and less than 100")]
-        public int? Limit { get; set; } = 25;
+        public int Limit { get; set; } = 25;
 
         /// <summary>
         /// List of searching across all items.

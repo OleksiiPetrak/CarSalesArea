@@ -44,18 +44,33 @@ namespace CarSalesArea.Data.Repositories
             });
         }
 
-        public async Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync()
+        public async Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync(PagingOptions pagingOptions)
         {
             return await WithConnection(async conn =>
             {
+                var sqlBuilder = new SqlBuilder();
+                var template = sqlBuilder.AddTemplate(GetAllCars.Value);
+
+                sqlBuilder.Where("c.Id > 0");
+                foreach (var filter in pagingOptions.Search)
+                {
+                    sqlBuilder.Where($"{filter.Key} = @columnValue", new {columnValue = filter.Value});
+                }
+
+                foreach (var order in pagingOptions.Sort)
+                {
+                    sqlBuilder.OrderBy($"{order.Key} {order.Value}");
+                }
+
                 return (await conn.QueryAsync<CarEntity, SalesArea, FuelTypeEntity, CarEntity>(
-                    GetAllCars.Value,
+                    template.RawSql,
                     (car, area, fuel) =>
                     {
                         car.SalesArea = area;
                         car.FuelType = fuel;
                         return car;
                     },
+                    template.Parameters,
                     splitOn: "AreaId, FuelTypeId"));
             });
         }

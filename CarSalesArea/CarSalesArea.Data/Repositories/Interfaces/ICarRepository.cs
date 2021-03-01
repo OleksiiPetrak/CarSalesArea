@@ -22,7 +22,7 @@ namespace CarSalesArea.Data.Repositories.Interfaces
         /// Retrieves all existing cars.
         /// </summary>
         /// <returns>Cars collection.</returns>
-        Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync();
+        Task<IEnumerable<CarEntity>> GetAllCarsCollectionAsync(PagingOptions pagingOptions);
 
         /// <summary>
         /// Creates new carEntity.

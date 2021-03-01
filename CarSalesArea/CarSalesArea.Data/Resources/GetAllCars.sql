@@ -19,3 +19,5 @@ SELECT
 FROM Car c
 LEFT JOIN SalesArea sa ON c.AreaId = sa.Id
 LEFT JOIN FuelType ft ON c.FuelTypeId = ft.FuelType
+/**where**/
+/**orderby**/

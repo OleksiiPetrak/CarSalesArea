@@ -27,7 +27,7 @@ namespace CarSalesArea.Api.Controllers
         [HttpGet("cars", Name = nameof(GetAllCarsAsync))]
         [ProducesResponseType(200)]
         public async Task<ActionResult<Collection<CarViewModel>>> GetAllCarsAsync(
-            [FromQuery] PagingOptions pagingOptions = null)
+            [FromQuery]PagingOptions pagingOptions)
         {
             var carsPaged = await _carService.GetAllCarsAsync(pagingOptions);
             var carViewModels = _mapper.Map<IEnumerable<CarViewModel>>(carsPaged.Items);

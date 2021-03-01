@@ -6,6 +6,7 @@ using CarSalesArea.Data.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PagingOptions = CarSalesArea.Core.Models.PagingOptions;
 
 namespace CarSalesArea.Core.Services
 {
@@ -30,7 +31,8 @@ namespace CarSalesArea.Core.Services
 
         public async Task<PagedResults<CarModel>> GetAllCarsAsync(PagingOptions pagingOptions)
         {
-            var carEntityCollection = await _carRepository.GetAllCarsCollectionAsync();
+            var pagingOptionsEntity = _mapper.Map<Data.Models.PagingOptions>(pagingOptions);
+            var carEntityCollection = await _carRepository.GetAllCarsCollectionAsync(pagingOptionsEntity);
             var carModelCollection = _mapper.Map<IEnumerable<CarModel>>(carEntityCollection);
 
             var pagedCars = carModelCollection
