@@ -1,0 +1,9 @@
+BEGIN TRAN
+
+	DELETE Photo
+	WHERE Id = @Id
+
+	IF(@@ERROR<>0)
+		ROLLBACK;
+
+COMMIT;

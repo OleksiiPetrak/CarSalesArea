@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents photo entity.
     /// </summary>
-    public class PhotoEntity
+    public class PhotoEntity: BaseEntity
     {
         /// <summary>
         /// The photo url.

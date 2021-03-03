@@ -1,0 +1,9 @@
+BEGIN TRAN
+
+INSERT INTO Photo VALUES
+	(@PhotoPath,@CarId);
+
+	IF(@@ERROR<>0)
+		ROLLBACK;
+
+COMMIT;

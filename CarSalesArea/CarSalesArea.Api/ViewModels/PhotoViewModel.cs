@@ -1,6 +1,9 @@
-﻿namespace CarSalesArea.Api.ViewModels
+﻿using CarSalesArea.Core.Infrastructure;
+using Newtonsoft.Json;
+
+namespace CarSalesArea.Api.ViewModels
 {
-    public class PhotoViewModel
+    public class PhotoViewModel: BaseViewModel, IEtaggable
     {
         /// <summary>
         /// The photo url.
@@ -11,5 +14,11 @@
         /// The related car.
         /// </summary>
         public CarViewModel Car { get; set; }
+
+        public string GetEtag()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return Md5Hash.ForString(serialized);
+        }
     }
 }

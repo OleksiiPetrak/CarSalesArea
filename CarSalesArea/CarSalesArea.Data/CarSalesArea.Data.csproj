@@ -9,34 +9,48 @@
   <ItemGroup>
     <None Remove="Resources\CreateCar.sql" />
     <None Remove="Resources\CreateManager.sql" />
+    <None Remove="Resources\CreatePhoto.sql" />
     <None Remove="Resources\CreateSalesArea.sql" />
     <None Remove="Resources\DeleteCar.sql" />
     <None Remove="Resources\DeleteManager.sql" />
+    <None Remove="Resources\DeletePhoto.sql" />
     <None Remove="Resources\DeleteSalesArea.sql" />
     <None Remove="Resources\GetAllCars.sql" />
     <None Remove="Resources\GetAllManagers.sql" />
+    <None Remove="Resources\GetAllPhotos.sql" />
     <None Remove="Resources\GetAllSalesAreas.sql" />
     <None Remove="Resources\GetCarById.sql" />
     <None Remove="Resources\GetLatestCarId.sql" />
     <None Remove="Resources\GetLatestManagerId.sql" />
+    <None Remove="Resources\GetLatestPhotoId.sql" />
     <None Remove="Resources\GetLatestSalesAreaId.sql" />
     <None Remove="Resources\GetManagerById.sql" />
+    <None Remove="Resources\GetPhotosByCarId.sql" />
     <None Remove="Resources\GetSalesAreaById.sql" />
     <None Remove="Resources\UpdateCar.sql" />
     <None Remove="Resources\UpdateCars.sql" />
     <None Remove="Resources\UpdateManager.sql" />
+    <None Remove="Resources\UpdatePhoto.sql" />
     <None Remove="Resources\UpdateSalesArea.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GetLatestPhotoId.sql" />
+    <EmbeddedResource Include="Resources\GetPhotosByCarId.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\CreateCar.sql" />
     <EmbeddedResource Include="Resources\CreateManager.sql" />
+    <EmbeddedResource Include="Resources\CreatePhoto.sql" />
     <EmbeddedResource Include="Resources\CreateSalesArea.sql" />
     <EmbeddedResource Include="Resources\DeleteCar.sql" />
     <EmbeddedResource Include="Resources\DeleteManager.sql" />
+    <EmbeddedResource Include="Resources\DeletePhoto.sql" />
     <EmbeddedResource Include="Resources\DeleteSalesArea.sql" />
     <EmbeddedResource Include="Resources\GetAllCars.sql" />
     <EmbeddedResource Include="Resources\GetAllManagers.sql" />
+    <EmbeddedResource Include="Resources\GetAllPhotos.sql" />
     <EmbeddedResource Include="Resources\GetAllSalesAreas.sql" />
     <EmbeddedResource Include="Resources\GetCarById.sql" />
     <EmbeddedResource Include="Resources\GetLatestCarId.sql" />
@@ -46,6 +60,7 @@
     <EmbeddedResource Include="Resources\GetSalesAreaById.sql" />
     <EmbeddedResource Include="Resources\UpdateCar.sql" />
     <EmbeddedResource Include="Resources\UpdateManager.sql" />
+    <EmbeddedResource Include="Resources\UpdatePhoto.sql" />
     <EmbeddedResource Include="Resources\UpdateSalesArea.sql" />
   </ItemGroup>
 

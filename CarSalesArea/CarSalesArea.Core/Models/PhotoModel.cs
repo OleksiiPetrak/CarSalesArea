@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents photo model.
     /// </summary>
-    public class PhotoModel
+    public class PhotoModel: BaseModel
     {
         /// <summary>
         /// The photo url.

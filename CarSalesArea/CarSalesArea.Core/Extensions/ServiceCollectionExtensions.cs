@@ -12,6 +12,7 @@ namespace CarSalesArea.Core.Extensions
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<ISalesAreaService, SalesAreaService>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IMediaService, MediaService>();
 
             return services;
         }
