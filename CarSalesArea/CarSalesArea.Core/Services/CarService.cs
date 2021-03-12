@@ -13,17 +13,22 @@ namespace CarSalesArea.Core.Services
     public class CarService: ICarService
     {
         private readonly ICarRepository _carRepository;
+        private readonly IMediaRepository _mediaRepository;
         private readonly IMapper _mapper;
 
-        public CarService(ICarRepository carRepository, IMapper mapper)
+        public CarService(ICarRepository carRepository, IMapper mapper, IMediaRepository mediaRepository)
         {
-            _carRepository = carRepository;
+            _carRepository = carRepository; 
+            _mediaRepository = mediaRepository;
             _mapper = mapper;
         }
 
         public async Task<CarModel> GetCarByIdAsync(long id)
         {
             var carEntity = await _carRepository.GetCarByIdAsync(id);
+            var photoEntityCollecion = await _mediaRepository.GetPhotoCollectionByCarIdAsync(carEntity.Id);
+            carEntity.Photos = photoEntityCollecion;
+
             var carModel = _mapper.Map<CarModel>(carEntity);
 
             return carModel;
@@ -33,6 +38,12 @@ namespace CarSalesArea.Core.Services
         {
             var pagingOptionsEntity = _mapper.Map<Data.Models.PagingOptions>(pagingOptions);
             var carEntityCollection = await _carRepository.GetAllCarsCollectionAsync(pagingOptionsEntity);
+
+            foreach (var carEntity in carEntityCollection)
+            {
+                carEntity.Photos = await _mediaRepository.GetPhotoCollectionByCarIdAsync(carEntity.Id);
+            }
+
             var carModelCollection = _mapper.Map<IEnumerable<CarModel>>(carEntityCollection);
 
             var pagedCars = carModelCollection
