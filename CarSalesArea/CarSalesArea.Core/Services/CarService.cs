@@ -26,6 +26,11 @@ namespace CarSalesArea.Core.Services
         public async Task<CarModel> GetCarByIdAsync(long id)
         {
             var carEntity = await _carRepository.GetCarByIdAsync(id);
+            if (carEntity == null)
+            {
+                return new CarModel();
+            }
+
             var photoEntityCollecion = await _mediaRepository.GetPhotoCollectionByCarIdAsync(carEntity.Id);
             carEntity.Photos = photoEntityCollecion;
 

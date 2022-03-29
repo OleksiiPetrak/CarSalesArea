@@ -16,6 +16,7 @@ namespace CarSalesArea.Core.UnitTests.Services
     {
         private readonly ICarService _carService;
         private readonly Mock<ICarRepository> _carRepositoryMock;
+        private readonly Mock<IMediaRepository> _mediaRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
 
         public CarServiceTest()
@@ -24,7 +25,8 @@ namespace CarSalesArea.Core.UnitTests.Services
             _mapperMock = new Mock<IMapper>();
             _carService = new CarService(
                 _carRepositoryMock.Object,
-                _mapperMock.Object);
+                _mapperMock.Object,
+                _mediaRepositoryMock.Object);
         }
 
         [TestMethod]

@@ -84,7 +84,12 @@ namespace CarSalesArea.Api
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowMyApp",
-                    policy => policy.AllowAnyOrigin());
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
             });
         }
 

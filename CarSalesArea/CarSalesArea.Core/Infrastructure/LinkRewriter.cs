@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CarSalesArea.Core.Models;
+﻿using CarSalesArea.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarSalesArea.Core.Infrastructure

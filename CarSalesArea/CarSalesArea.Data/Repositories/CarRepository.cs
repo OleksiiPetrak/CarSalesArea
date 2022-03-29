@@ -54,7 +54,17 @@ namespace CarSalesArea.Data.Repositories
                 sqlBuilder.Where("c.Id > 0");
                 foreach (var filter in pagingOptions.Search)
                 {
-                    sqlBuilder.Where($"{filter.Key} '{filter.Value}'");
+                    if(filter.Value != null)
+                    {
+                        if (filter.Key.Contains('>') || filter.Key.Contains('<'))
+                        {
+                            sqlBuilder.Where($"{filter.Key} '{filter.Value}'");
+                        }
+                        else
+                        {
+                            sqlBuilder.Where($"{filter.Key}= '{filter.Value}'");
+                        }
+                    }
                 }
 
                 foreach (var order in pagingOptions.Sort)

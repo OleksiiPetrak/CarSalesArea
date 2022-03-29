@@ -1,8 +1,6 @@
 ﻿using CarSalesArea.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Filters
