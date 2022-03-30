@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CarSalesArea.Core.UnitTests.Services
 {
@@ -23,6 +24,7 @@ namespace CarSalesArea.Core.UnitTests.Services
         {
             _carRepositoryMock = new Mock<ICarRepository>();
             _mapperMock = new Mock<IMapper>();
+            _mediaRepositoryMock = new Mock<IMediaRepository>();
             _carService = new CarService(
                 _carRepositoryMock.Object,
                 _mapperMock.Object,
@@ -33,7 +35,7 @@ namespace CarSalesArea.Core.UnitTests.Services
         public void GetAllCars_ReturnCollectionOfCars_IfAnyExist()
         {
             //Arrange
-            var collection = new List<CarEntity>()
+            IEnumerable<CarEntity> collection = new List<CarEntity>()
             {
                 new CarEntity()
                 {
@@ -54,7 +56,7 @@ namespace CarSalesArea.Core.UnitTests.Services
                 }
             };
 
-            var collectionModel = new List<CarModel>()
+            IEnumerable<CarModel> collectionModel = new List<CarModel>()
             {
                 new CarModel()
                 {
@@ -81,6 +83,12 @@ namespace CarSalesArea.Core.UnitTests.Services
                 Offset = 0
             };
 
+            var expectedResult = new PagedResults<CarModel>()
+            {
+                Items = collectionModel,
+                TotalSize = collection.Count()
+            };
+
             _carRepositoryMock.Setup(r => r.GetAllCarsCollectionAsync(It.IsAny<Data.Models.PagingOptions>()))
                 .ReturnsAsync(collection);
             _mapperMock.Setup(r => r.Map<IEnumerable<CarModel>>(
@@ -90,7 +98,8 @@ namespace CarSalesArea.Core.UnitTests.Services
             var result = _carService.GetAllCarsAsync(pagingOptions);
 
             //Assert
-            Assert.AreEqual(collectionModel, result.Result);
+            Assert.AreEqual(expectedResult.Items.First(), result.Result.Items.First());
+            Assert.AreEqual(expectedResult.TotalSize, result.Result.TotalSize);
         }
 
         [TestMethod]
