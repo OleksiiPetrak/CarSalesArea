@@ -60,14 +60,14 @@ namespace CarSalesArea.Core.UnitTests.Services
             {
                 new CarModel()
                 {
-                    Brand = "brand",
+                    Brand = "test",
                     Model = "model",
                     Body = "BODY",
                     Color = "color",
                     Description = "description",
                     EngineVolume = 3.0,
                     Id = 1,
-                    Mileage = 100000,
+                    Mileage = 10000,
                     Price = 10000,
                     Year = DateTime.MinValue,
                     VinCode = "vin",
