@@ -5,6 +5,7 @@ using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +16,15 @@ namespace CarSalesArea.Api.Controllers
     public class MediaController:ControllerBase
     {
         private readonly IMediaService _mediaService;
+        private readonly IStorageService _storageService;
         private readonly IMapper _mapper;
 
-        public MediaController(IMediaService mediaService, IMapper mapper)
+        public MediaController(IMediaService mediaService,
+            IStorageService storageService,
+            IMapper mapper)
         {
             _mediaService = mediaService;
+            _storageService = storageService;
             _mapper = mapper;
         }
 
@@ -101,5 +106,59 @@ namespace CarSalesArea.Api.Controllers
 
             return Ok();
         }
+
+
+        // POST /api/Files
+        // Called once for each file uploaded.
+        [HttpPost()]
+        public async Task<IActionResult> Upload(/*[FromForm]JObject data IFormFile file*/)
+        {
+            var file = Request.Form.Files.FirstOrDefault();
+
+            //IFormFile file = data["carMediaFile"].ToObject<IFormFile>();
+            // IFormFile.FileName is untrustworthy user input, and we're
+            // using it for both blob names and for display on the page,
+            // so we aggressively sanitize. In a real app, we'd probably
+            // do something more complex and robust for handling filenames.
+            //var name = SanitizeFilename(file.FileName);
+
+            //if (String.IsNullOrWhiteSpace(name))
+            //{
+            //    throw new ArgumentException();
+            //}
+
+            using (Stream stream = file.OpenReadStream())
+            {
+                //await storage.Save(stream, name);
+                await _storageService.Save(stream, file.FileName);
+            }
+
+            return Accepted();
+        }
+
+        //// GET /api/Files/{filename}
+        //// Called when clicking a link to download a specific file.
+        //[HttpGet("{filename}")]
+        //public async Task<IActionResult> Download(string filename)
+        //{
+        //    var stream = await storage.Load(filename);
+
+        //    // This usage of File() always triggers the browser to perform a file download.
+        //    // We always use "application/octet-stream" as the content type because we don't record
+        //    // any information about content type from the user when they upload a file.
+        //    return File(stream, "application/octet-stream", filename);
+        //}
+
+        //private static string SanitizeFilename(string filename)
+        //{
+        //    var sanitizedFilename = filenameRegex.Replace(filename, "").TrimEnd('.');
+
+        //    if (sanitizedFilename.Length > MaxFilenameLength)
+        //    {
+        //        sanitizedFilename = sanitizedFilename.Substring(0, MaxFilenameLength);
+        //    }
+
+        //    return sanitizedFilename;
+        //}
     }
 }

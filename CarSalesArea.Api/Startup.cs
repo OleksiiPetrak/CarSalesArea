@@ -1,5 +1,6 @@
 using CarSalesArea.Core.Extensions;
 using CarSalesArea.Core.Filters;
+using CarSalesArea.Core.Models;
 using CarSalesArea.Data.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,9 @@ namespace CarSalesArea.Api
                     });
                     options.Filters.Add<LinkRewriterFilter>();
                 }).AddNewtonsoftJson();
+
+            services.AddOptions();
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
             services.AddCore(Configuration);
             services.AddData(Configuration);
 
