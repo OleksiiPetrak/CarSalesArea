@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using CarSalesArea.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -57,7 +58,10 @@ namespace CarSalesArea.Core.Services.Interfaces
                     BlobClient blobClient = containerClient.GetBlobClient(uniqueMediaName);
 
                     // Upload the blob
-                    await blobClient.UploadAsync(stream);
+                    await blobClient.UploadAsync(stream, new BlobHttpHeaders 
+                    { 
+                        ContentType = file.ContentType
+                    });
                 }
                 uniqueMediaPathCollection.Add(GetPathToMedia(uniqueMediaName));
             }
