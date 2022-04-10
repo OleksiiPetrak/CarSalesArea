@@ -15,14 +15,17 @@ namespace CarSalesArea.Core.UnitTests.Services
     public class MediaServiceTest
     {
         private readonly IMediaService _mediaService;
+        private readonly Mock<IStorageService> _storageServiceMock;
         private readonly Mock<IMediaRepository> _mediaRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
 
         public MediaServiceTest()
         {
+            _storageServiceMock = new Mock<IStorageService>();
             _mediaRepositoryMock = new Mock<IMediaRepository>();
             _mapperMock = new Mock<IMapper>();
             _mediaService = new MediaService(
+                _storageServiceMock.Object,
                 _mediaRepositoryMock.Object,
                 _mapperMock.Object);
         }

@@ -85,7 +85,7 @@ namespace CarSalesArea.Data.Repositories
             });
         }
 
-        public async Task<long> CreateManagerAsync(CarEntity carEntity)
+        public async Task<long> CreateCarAdvertisementAsync(CarEntity carEntity)
         {
             await WithConnection(async conn =>
             {
@@ -103,8 +103,8 @@ namespace CarSalesArea.Data.Repositories
                         carEntity.VinCode,
                         carEntity.Color,
                         carEntity.Body,
-                        AreaId = carEntity.SalesArea.Id,
-                        FuelTypeId = carEntity.FuelType.FuelType,
+                        AreaId = 1, //carEntity.SalesArea.Id,
+                        FuelTypeId = "Petrol" //carEntity.FuelType.FuelType,
                     });
 
                 await conn.ExecuteAsync(command);

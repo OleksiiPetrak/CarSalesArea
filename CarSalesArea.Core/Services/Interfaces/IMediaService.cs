@@ -1,4 +1,5 @@
 ﻿using CarSalesArea.Core.Models;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,14 @@ namespace CarSalesArea.Core.Services.Interfaces
         /// </summary>
         /// <param name="photoModel">The photo model.</param>
         Task<long> CreatePhotoAsync(PhotoModel photoModel);
+
+        /// <summary>
+        /// Add media files for car.
+        /// </summary>
+        /// <param name="carId">Id of selected car.</param>
+        /// <param name="mediaFiles">Collection of media files.</param>
+        /// <returns></returns>
+        Task<IEnumerable<long>> CreateCarMediaAsync(long carId, IEnumerable<IFormFile> mediaFiles);
 
         /// <summary>
         /// Update existing photo.

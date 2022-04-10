@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarSalesArea.Api.ViewModels;
 using CarSalesArea.Core.Infrastructure;
 using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarSalesArea.Api.Controllers
 {
@@ -62,13 +61,13 @@ namespace CarSalesArea.Api.Controllers
 
         [HttpPost("car", Name = nameof(CreateCarAsync))]
         [ProducesResponseType(201)]
-        public async Task<ActionResult> CreateCarAsync([FromBody] CarViewModel car)
+        public async Task<ActionResult> CreateCarAsync([FromForm] CarViewModel car)
         {
             var carModel = _mapper.Map<CarModel>(car);
             var carId = await _carService.CreateCarAsync(carModel);
 
             var link = Url.Link(nameof(GetCarByIdAsync),
-                new { id = carId});
+                new { id = carId });
 
             return Created(link, null);
         }

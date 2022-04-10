@@ -1,13 +1,12 @@
-﻿using CarSalesArea.Data.Models;
+﻿using CarSalesArea.Data.Helpers;
+using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
-using CarSalesArea.Data.Helpers;
 
 namespace CarSalesArea.Data.Repositories
 {

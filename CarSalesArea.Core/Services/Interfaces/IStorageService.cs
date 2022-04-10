@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Services.Interfaces
@@ -8,6 +10,8 @@ namespace CarSalesArea.Core.Services.Interfaces
         Task Initialize();
 
         Task Save(Stream fileStream, string name);
+
+        Task<List<string>> SaveCarMedia(IEnumerable<IFormFile> mediaFiles);
 
         Task<Stream> Load(string name);
     }

@@ -16,16 +16,19 @@ namespace CarSalesArea.Core.UnitTests.Services
     public class CarServiceTest
     {
         private readonly ICarService _carService;
+        private readonly Mock<IMediaService> _mediaServiceMock;
         private readonly Mock<ICarRepository> _carRepositoryMock;
         private readonly Mock<IMediaRepository> _mediaRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
 
         public CarServiceTest()
         {
+            _mediaServiceMock = new Mock<IMediaService>();
             _carRepositoryMock = new Mock<ICarRepository>();
             _mapperMock = new Mock<IMapper>();
             _mediaRepositoryMock = new Mock<IMediaRepository>();
             _carService = new CarService(
+                _mediaServiceMock.Object,
                 _carRepositoryMock.Object,
                 _mapperMock.Object,
                 _mediaRepositoryMock.Object);
@@ -193,13 +196,13 @@ namespace CarSalesArea.Core.UnitTests.Services
             };
 
             _carRepositoryMock
-                .Setup(r => r.CreateManagerAsync(It.IsAny<CarEntity>()));
+                .Setup(r => r.CreateCarAdvertisementAsync(It.IsAny<CarEntity>()));
 
             //Act
             _carService.CreateCarAsync(carModel);
 
             //Assert
-            _carRepositoryMock.Verify(x=>x.CreateManagerAsync(It.IsAny<CarEntity>()), Times.Once);
+            _carRepositoryMock.Verify(x=>x.CreateCarAdvertisementAsync(It.IsAny<CarEntity>()), Times.Once);
         }
 
         [TestMethod]

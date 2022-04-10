@@ -12,12 +12,17 @@ namespace CarSalesArea.Core.Services
 {
     public class CarService: ICarService
     {
+        private readonly IMediaService _mediaService;
         private readonly ICarRepository _carRepository;
         private readonly IMediaRepository _mediaRepository;
         private readonly IMapper _mapper;
 
-        public CarService(ICarRepository carRepository, IMapper mapper, IMediaRepository mediaRepository)
+        public CarService(IMediaService mediaService,
+            ICarRepository carRepository,
+            IMapper mapper,
+            IMediaRepository mediaRepository)
         {
+            _mediaService = mediaService;
             _carRepository = carRepository; 
             _mediaRepository = mediaRepository;
             _mapper = mapper;
@@ -65,9 +70,11 @@ namespace CarSalesArea.Core.Services
         public async Task<long> CreateCarAsync(CarModel car)
         {
             var carEntity = _mapper.Map<CarEntity>(car);
-            var createdCarId = await _carRepository.CreateManagerAsync(carEntity);
+            var createdCarId = await _carRepository.CreateCarAdvertisementAsync(carEntity);
 
-            return createdCarId;
+            await _mediaService.CreateCarMediaAsync(createdCarId, car.Files);
+
+            return createdCarId;    
         }
 
         public async Task UpdateCarAsync(CarModel car)

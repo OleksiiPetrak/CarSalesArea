@@ -28,7 +28,7 @@ namespace CarSalesArea.Data.Repositories.Interfaces
         /// Creates new carEntity.
         /// </summary>
         /// <param name="manager">The carEntity entity.</param>
-        Task<long> CreateManagerAsync(CarEntity carEntity);
+        Task<long> CreateCarAdvertisementAsync(CarEntity carEntity);
 
         /// <summary>
         /// Update existing carEntity.

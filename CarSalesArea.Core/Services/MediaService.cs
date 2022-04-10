@@ -3,18 +3,26 @@ using CarSalesArea.Core.Models;
 using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Services
 {
     public class MediaService: IMediaService
     {
+        private readonly IStorageService _storageService;
         private readonly IMediaRepository _mediaRepository;
         private readonly IMapper _mapper;
 
-        public MediaService(IMediaRepository mediaRepository, IMapper mapper)
+        public MediaService(IStorageService storageService,
+            IMediaRepository mediaRepository,
+            IMapper mapper)
         {
+            _storageService = storageService;
             _mediaRepository = mediaRepository;
             _mapper = mapper;
         }
@@ -41,6 +49,28 @@ namespace CarSalesArea.Core.Services
             var id = await _mediaRepository.CreatePhotoAsync(photoEntity);
 
             return id;
+        }
+
+        public async Task<IEnumerable<long>> CreateCarMediaAsync(long carId, IEnumerable<IFormFile> mediaFiles)
+        {
+            var photoIdCollection = new List<long>();
+            var uniqueMediaPathCollection = await _storageService.SaveCarMedia(mediaFiles);
+
+            foreach (string mediaPath in uniqueMediaPathCollection)
+            {
+                var photoModel = new PhotoModel
+                {
+                    PhotoPath = mediaPath,
+                    Car = new CarModel
+                    {
+                        Id = carId
+                    }
+                };
+
+                photoIdCollection.Add(await CreatePhotoAsync(photoModel));
+            }
+
+            return photoIdCollection;
         }
 
         public async Task UpdatePhotoAsync(PhotoModel photoModel)

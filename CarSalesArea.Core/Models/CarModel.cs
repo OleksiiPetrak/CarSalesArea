@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
-using CarSalesArea.Core.Infrastructure;
-using Newtonsoft.Json;
 
 namespace CarSalesArea.Core.Models
 {
@@ -41,5 +40,10 @@ namespace CarSalesArea.Core.Models
         /// The car's related photos.
         /// </summary>
         public IEnumerable<PhotoModel> Photos { get; set; }
+
+        /// <summary>
+        /// The car's media file collection for storage.
+        /// </summary>
+        public IEnumerable<IFormFile> Files { get; set; }
     }
 }

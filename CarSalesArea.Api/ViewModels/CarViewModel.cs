@@ -1,4 +1,5 @@
 ﻿using CarSalesArea.Core.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,11 @@ namespace CarSalesArea.Api.ViewModels
         /// The car's related photos.
         /// </summary>
         public IEnumerable<PhotoViewModel> Photos { get; set; }
+
+        /// <summary>
+        /// The car's media file collection for storage.
+        /// </summary>
+        public IEnumerable<IFormFile> Files { get; set; }
 
         public string GetEtag()
         {
