@@ -4,10 +4,7 @@ using CarSalesArea.Core.Services.Interfaces;
 using CarSalesArea.Data.Models;
 using CarSalesArea.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarSalesArea.Core.Services
